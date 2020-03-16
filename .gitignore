@@ -1,0 +1,7 @@
+
+*.pyc
+*.rdb
+/snapshots/*
+/data/*
+*.log
+*.DS_Store
