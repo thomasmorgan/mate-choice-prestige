@@ -9,8 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from dallinger.bots import BotBase
 from dallinger.config import get_config
-from dallinger.networks import Chain
+from dallinger.networks import FullyConnected
 from dallinger.experiment import Experiment
+from dallinger.nodes import Source
 
 
 logger = logging.getLogger(__file__)
@@ -59,16 +60,18 @@ class Bartlett1932(Experiment):
 
     def create_network(self):
         """Return a new network."""
-        return Chain(max_size=self.num_participants)
+        return FullyConnected(max_size=self.num_participants)
 
     def add_node_to_network(self, node, network):
         """Add node to the chain and receive transmissions."""
         network.add_node(node)
-        parents = node.neighbors(direction="from")
-        if len(parents):
-            parent = parents[0]
-            parent.transmit()
-        node.receive()
+        other_nodes = [n for n in self.nodes() if n.id != node.id]
+
+        for n in other_nodes:
+            if isinstance(n, Source):
+                node.connect(direction="from", whom=n)
+            else:
+                node.connect(direction="both", whom=n)
 
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
