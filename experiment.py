@@ -37,7 +37,7 @@ class Bartlett1932(Experiment):
 
         self.models = models
         self.experiment_repeats = 1
-        self.initial_recruitment_size = 1
+        self.initial_recruitment_size = self.num_participants
         if session:
             self.setup()
 
@@ -65,13 +65,17 @@ class Bartlett1932(Experiment):
     def add_node_to_network(self, node, network):
         """Add node to the chain and receive transmissions."""
         network.add_node(node)
-        other_nodes = [n for n in self.nodes() if n.id != node.id]
+        other_nodes = [n for n in network.nodes() if n.id != node.id]
 
         for n in other_nodes:
             if isinstance(n, Source):
                 node.connect(direction="from", whom=n)
             else:
                 node.connect(direction="both", whom=n)
+
+        if (network.full):
+            source = network.nodes(type=Source)[0]
+            source.transmit()
 
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
