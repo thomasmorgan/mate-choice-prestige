@@ -69,7 +69,10 @@ class Bartlett1932(Experiment):
         if (network.full):
             source = network.nodes(type=Source)[0]
             source.transmit()
-            node.receive()
+
+        for n in network.nodes():
+            if not isinstance(n, Source):
+                n.receive()
 
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
