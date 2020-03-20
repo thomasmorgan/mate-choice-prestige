@@ -60,22 +60,16 @@ class Bartlett1932(Experiment):
 
     def create_network(self):
         """Return a new network."""
-        return FullyConnected(max_size=self.num_participants+1)
+        return FullyConnected(max_size=self.num_participants + 1)
 
     def add_node_to_network(self, node, network):
         """Add node to the chain and receive transmissions."""
         network.add_node(node)
-        other_nodes = [n for n in network.nodes() if n.id != node.id]
-
-        for n in other_nodes:
-            if isinstance(n, Source):
-                node.connect(direction="from", whom=n)
-            else:
-                node.connect(direction="both", whom=n)
 
         if (network.full):
             source = network.nodes(type=Source)[0]
             source.transmit()
+            node.receive()
 
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
