@@ -60,7 +60,7 @@ class Bartlett1932(Experiment):
 
     def create_network(self):
         """Return a new network."""
-        return FullyConnected(max_size=self.num_participants)
+        return FullyConnected(max_size=self.num_participants+1)
 
     def add_node_to_network(self, node, network):
         """Add node to the chain and receive transmissions."""
