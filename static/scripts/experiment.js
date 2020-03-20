@@ -4,12 +4,19 @@ var get_info = function() {
   // Get info for node
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
-      var story = resp.infos[0].contents;
-      var storyHTML = markdown.toHTML(story);
-      $("#story").html(storyHTML);
-      $("#stimulus").show();
-      $("#response-form").hide();
-      $("#finish-reading").show();
+      num_infos = resp.infos.length;
+      if (num_infos > 0) {
+        var story = resp.infos[0].contents;
+        var storyHTML = markdown.toHTML(story);
+        $("#story").html(storyHTML);
+        $("#stimulus").show();
+        $("#response-form").hide();
+        $("#finish-reading").show();
+      } else {
+        setTimeout(function() {
+          get_info();
+        }, 1000);
+      }
     })
     .fail(function (rejection) {
       console.log(rejection);
