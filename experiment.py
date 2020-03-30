@@ -13,8 +13,6 @@ from dallinger.networks import FullyConnected
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
 
-exp_class_working_dir
-
 logger = logging.getLogger(__file__)
 
 

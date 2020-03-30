@@ -1,28 +1,17 @@
 from dallinger.nodes import Source
-from dallinger.models import questions
-
-from dallinger.models import Node, Info, Network
-
-from operator import attrgetter
-from datetime import datetime
+import json
 
 
-class Questionaire(Source):
+class Questionnaire(Source):
     """A Source that reads in a question from a file and transmits it."""
 
-    __mapper_args__ = {"polymorphic_identity": "questionaire_source"}
+    __mapper_args__ = {"polymorphic_identity": "questionnaire_source"}
 
     def _contents(self):
         """Define the contents of new Infos.
 
         transmit() -> _what() -> create_information() -> _contents().
         """
-           story = random.choice(stories)
-        with open("static/stimuli/{}".format(story), "r") as f:
-            return f.read()
-
-number_transmissions = len(self.infos())
-        import json
         questions = [
             json.dumps({
                 'question': 'What is the capital city of France?',
@@ -32,7 +21,7 @@ number_transmissions = len(self.infos())
                 'Wwer': 'Barcelona',
                 'Rwer': 'Paris',
                 'pic': False,
-                }),
+            }),
             json.dumps({
                 'question': 'How much does an average chimpanzee weigh?',
                 'number': 'practice 2',
@@ -43,7 +32,8 @@ number_transmissions = len(self.infos())
                 'pic': False,
             })
         ]
-number_transmissions = len([i for i in self.infos(questions) if i.contents not in ["Bad Luck", "Good Luck"]])
+
+        number_transmissions = len(self.infos())
         if number_transmissions < len(questions):
             question = questions[number_transmissions]
         else:
