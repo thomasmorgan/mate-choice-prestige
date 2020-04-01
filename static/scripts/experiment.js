@@ -6,12 +6,16 @@ var get_info = function() {
     .done(function (resp) {
       num_infos = resp.infos.length;
       if (num_infos > 0) {
-        var story = resp.infos[0].contents;
-        var storyHTML = markdown.toHTML(story);
-        $("#story").html(storyHTML);
-        $("#stimulus").show();
-        $("#response-form").hide();
-        $("#finish-reading").show();
+        var question_json = JSON.parse(resp.infos[0].contents);
+        round = question_json.round;
+        question_text = question_json.question;
+        Wwer = question_json.Wwer;
+        Rwer = question_json.Rwer;
+        number = question_json.number;
+        topic = question_json.topic;
+        round = question_json.round;
+        pic = question_json.pic;
+        display_question();
       } else {
         setTimeout(function() {
           get_info();
@@ -22,6 +26,40 @@ var get_info = function() {
       console.log(rejection);
       $('body').html(rejection.html);
     });
+};
+
+// display the question
+display_question = function() {
+    $("#question").html(question_text);
+    $("#question_number").html("You are on question " + number + "/100");
+    
+    if (pic == true) {
+        show_pics(number);
+    } else {
+        hide_pics();
+    }
+
+    if (Math.random() < 0.5) {
+        $("#submit-a").html(Wwer);
+        $("#submit-b").html(Rwer);
+    } else {
+        $("#submit-b").html(Wwer);
+        $("#submit-a").html(Rwer);
+    }
+    
+    countdown = 15;
+    $("#countdown").html(countdown);
+    $("#question_div").show();
+    // start_answer_timeout();
+};
+
+hide_pics = function() {
+    $("#pics").hide();
+};
+
+show_pics = function(number) {
+    $("#pics").attr("src", "/static/images/" + number + ".png");
+    $("#pics").show();
 };
 
 // Create the agent.
