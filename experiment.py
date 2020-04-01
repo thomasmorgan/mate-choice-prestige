@@ -55,7 +55,7 @@ class Bartlett1932(Experiment):
         if not self.networks():
             super(Bartlett1932, self).setup()
             for net in self.networks():
-                self.models.WarOfTheGhostsSource(network=net)
+                self.models.Questionnaire(network=net)
 
     def create_network(self):
         """Return a new network."""
