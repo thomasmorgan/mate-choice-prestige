@@ -85,27 +85,26 @@ var create_agent = function() {
 // Consent to the experiment.
 $(document).ready(function() {
 
-  $("#finish-reading").click(function() {
-    $("#stimulus").hide();
-    $("#response-form").show();
-    $("#submit-response").removeClass('disabled');
-    $("#submit-response").html('Submit');
+  $("#submit-a").click(function() {
+    submit_response(get_button_text("#submit-a"));
   });
 
-  $("#submit-response").click(function() {
-    $("#submit-response").addClass('disabled');
-    $("#submit-response").html('Sending...');
-
-    var response = $("#reproduction").val();
-
-    $("#reproduction").val("");
-
-    dallinger.createInfo(my_node_id, {
-      contents: response,
-      info_type: 'Info'
-    }).done(function (resp) {
-      create_agent();
-    });
+  $("#submit-b").click(function() {
+    submit_response(get_button_text("#submit-b"));
   });
-
 });
+
+function get_button_text(button) {
+  return($(button).text());
+}
+
+function submit_response(response) {
+  dallinger.createInfo(my_node_id, {
+    contents: response
+  }).done(function (resp) {
+    get_info();
+  })
+  .fail(function (rejection) {
+    dallinger.error(rejection);
+  });
+}
