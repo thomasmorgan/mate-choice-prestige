@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="main_div">
-        <div id="question_div">
+        <div id="question_div" style="display: none">
             <h4 id="question_number">This is question 1</h4>
             <img id = "pics" src="" alt="q1" height="320" width="450">
             <h3 id="question">Question goes here.</h3>
@@ -12,6 +12,9 @@
             <br>
             <br>
             <h2 id="countdown"></h2>
+        </div>
+        <div id="wait_div">
+            <h4>Waiting for next question. Thanks for your patience...</h4>
         </div>
     </div>
 {% endblock %}

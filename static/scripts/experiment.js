@@ -50,6 +50,7 @@ display_question = function() {
     countdown = 15;
     $("#countdown").html(countdown);
     $("#question_div").show();
+    $("#wait_div").hide();
     // start_answer_timeout();
 };
 
@@ -99,6 +100,8 @@ function get_button_text(button) {
 }
 
 function submit_response(response) {
+  $("#question_div").hide();
+  $("#wait_div").show();
   dallinger.createInfo(my_node_id, {
     contents: response
   }).done(function (resp) {
