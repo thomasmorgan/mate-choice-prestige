@@ -1,21 +1,22 @@
 var my_node_id;
+var most_recent_question_number = 0;
 
 var get_info = function() {
   // Get info for node
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
-      num_infos = resp.infos.length;
-      if (num_infos > 0) {
-        var question_json = JSON.parse(resp.infos[0].contents);
-        round = question_json.round;
-        question_text = question_json.question;
-        Wwer = question_json.Wwer;
-        Rwer = question_json.Rwer;
-        number = question_json.number;
-        topic = question_json.topic;
-        round = question_json.round;
-        pic = question_json.pic;
-        display_question();
+      var question_json = get_max_question(resp.infos);
+      if (typeof question_json != "undefined") {
+          round = question_json.round;
+          question_text = question_json.question;
+          Wwer = question_json.Wwer;
+          Rwer = question_json.Rwer;
+          number = question_json.number;
+          most_recent_question_number = number;
+          topic = question_json.topic;
+          round = question_json.round;
+          pic = question_json.pic;
+          display_question();
       } else {
         setTimeout(function() {
           get_info();
@@ -26,6 +27,18 @@ var get_info = function() {
       console.log(rejection);
       $('body').html(rejection.html);
     });
+};
+
+get_max_question = function(infos) {
+  var current_max_question;
+  for (i = 0; i < infos.length; i++) {
+    this_info = JSON.parse(infos[i].contents);
+    if (this_info.number > most_recent_question_number) {
+      most_recent_question_number = this_info.number;
+      current_max_question = this_info;
+    }
+  }
+  return(current_max_question);
 };
 
 // display the question

@@ -15,7 +15,7 @@ class Questionnaire(Source):
         questions = [
             json.dumps({
                 'question': 'What is the capital city of France?',
-                'number': 'practice 1',
+                'number': 1,
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Barcelona',
@@ -24,7 +24,7 @@ class Questionnaire(Source):
             }),
             json.dumps({
                 'question': 'How much does an average chimpanzee weigh?',
-                'number': 'practice 2',
+                'number': 2,
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': '500kg',
