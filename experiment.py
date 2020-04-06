@@ -1,6 +1,8 @@
 """Bartlett's transmission chain experiment from Remembering (1932)."""
 
 import logging
+import gevent
+import traceback
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -79,6 +81,32 @@ class Bartlett1932(Experiment):
             self.recruiter.recruit(n=1)
         else:
             self.recruiter.close_recruitment()
+
+    @property
+    def background_tasks(self):
+        return [
+            self.quiz_monitor,
+        ]
+
+    def quiz_monitor(self):
+        try:
+            quiz_ongoing = True
+            while quiz_ongoing:
+                gevent.sleep(2)
+                for net in self.networks():
+                    source = net.nodes(type=self.models.Questionnaire)[0]
+                    num_questions_sent = len(source.infos())
+                    nodes = [n for n in net.nodes() if n.type != "questionnaire_source"]
+                    num_questions_answered = [len(n.infos()) for n in nodes]
+
+                    ready_for_next_question = num_questions_sent > 0 and all([n == num_questions_sent for n in num_questions_answered])
+                    if ready_for_next_question:
+                        source.transmit()
+                        for n in nodes:
+                            n.receive()
+                        self.save()
+        except Exception:
+            self.log(traceback.format_exc())
 
 
 class Bot(BotBase):
