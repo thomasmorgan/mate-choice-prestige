@@ -70,6 +70,7 @@ display_question = function() {
 assign_button = function(button, answer) {
   button_name = "#submit-" + button;
   $(button_name).html(answer);
+  $(button_name).unbind('click');
   $(button_name).click(function() { submit_response(answer); });
 };
 
