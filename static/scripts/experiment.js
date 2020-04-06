@@ -53,11 +53,11 @@ display_question = function() {
     }
 
     if (Math.random() < 0.5) {
-        $("#submit-a").html(Wwer);
-        $("#submit-b").html(Rwer);
+      assign_button("a", Wwer);
+      assign_button("b", Rwer);
     } else {
-        $("#submit-b").html(Wwer);
-        $("#submit-a").html(Rwer);
+      assign_button("a", Rwer);
+      assign_button("b", Wwer);
     }
     
     countdown = 15;
@@ -65,6 +65,12 @@ display_question = function() {
     $("#question_div").show();
     $("#wait_div").hide();
     // start_answer_timeout();
+};
+
+assign_button = function(button, answer) {
+  button_name = "#submit-" + button;
+  $(button_name).html(answer);
+  $(button_name).click(function() { submit_response(answer); });
 };
 
 hide_pics = function() {
@@ -95,22 +101,6 @@ var create_agent = function() {
       }
     });
 };
-
-// Consent to the experiment.
-$(document).ready(function() {
-
-  $("#submit-a").click(function() {
-    submit_response(get_button_text("#submit-a"));
-  });
-
-  $("#submit-b").click(function() {
-    submit_response(get_button_text("#submit-b"));
-  });
-});
-
-function get_button_text(button) {
-  return($(button).text());
-}
 
 function submit_response(response) {
   $("#question_div").hide();
