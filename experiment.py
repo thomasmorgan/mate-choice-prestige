@@ -4,12 +4,6 @@ import logging
 import gevent
 import traceback
 
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-from dallinger.bots import BotBase
 from dallinger.config import get_config
 from dallinger.networks import FullyConnected
 from dallinger.experiment import Experiment
