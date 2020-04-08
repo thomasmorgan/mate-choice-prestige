@@ -30,6 +30,24 @@ class Questionnaire(Source):
                 'Wwer': '500kg',
                 'Rwer': '50kg',
                 'pic': False,
+            }),
+            json.dumps({
+                'question': 'What is the capital city of France? 22222',
+                'number': 3,
+                'round': 0,
+                'topic': 'Practice',
+                'Wwer': 'Barcelona',
+                'Rwer': 'Paris',
+                'pic': False,
+            }),
+            json.dumps({
+                'question': 'How much does an average chimpanzee weigh? 2222222',
+                'number': 4,
+                'round': 0,
+                'topic': 'Practice',
+                'Wwer': '500kg',
+                'Rwer': '50kg',
+                'pic': False,
             })
         ]
 
