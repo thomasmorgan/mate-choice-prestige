@@ -75,6 +75,21 @@ class Bartlett1932(Experiment):
             if not isinstance(n, Source):
                 n.receive()
 
+    def info_post_request(self, node, info):
+        self.log("Info posted!")
+
+        response = info.contents
+        self.log("Response : {}".format(response))
+
+        right_answer = info.details["Rwer"]
+        self.log("Answer : {}".format(right_answer))
+
+        if response == right_answer:
+            self.log("Got it right!")
+            self.log("Score was {}".format(node.details["score"]))
+            node.details["score"] = node.details["score"] + 1
+            self.log("Score is now {}".format(node.details["score"]))
+
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
         if self.networks(full=False):
