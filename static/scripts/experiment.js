@@ -1,11 +1,12 @@
 var my_node_id;
 var most_recent_question_number = 0;
+var question_json;
 
 var get_info = function() {
   // Get info for node
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
-      var question_json = get_max_question(resp.infos);
+      question_json = get_max_question(resp.infos);
       if (typeof question_json != "undefined") {
           round = question_json.round;
           question_text = question_json.question;
@@ -107,7 +108,8 @@ function submit_response(response) {
   $("#question_div").hide();
   $("#wait_div").show();
   dallinger.createInfo(my_node_id, {
-    contents: response
+    contents: response,
+    details: JSON.stringify(question_json)
   }).done(function (resp) {
     get_info();
   })
