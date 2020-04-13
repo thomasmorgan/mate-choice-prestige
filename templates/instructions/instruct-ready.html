@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="dallinger.goToPage('experiment')">
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="my_function()">
                     Begin</button>
                 </div>
             </div>
@@ -36,6 +36,16 @@
 
 {% block scripts %}
     <script>
+        function my_function() {
+            xhr = dlgr.post('/question/' + dlgr.identity.participantId, {
+                question: "preference",
+                number: 0,
+                response: // contents here.
+            }).done() {
+                // go to experiment;
+            }
+        }
+
         $("#begin-button").prop('disabled', true);
         $("#radio-div").hide();
         dallinger.createParticipant().done(function (resp) {
