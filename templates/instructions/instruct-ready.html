@@ -10,12 +10,12 @@
 
         <p>Before we begin, please tell us whether you are primarily interested in men or women as romatic partners:</p>
 
-        <div class="col-md-4">
+        <div id="radio-div" class="col-md-4">
             <form>
-                <input type="radio" name="gender" value="none" checked class="hidden"><br>
-                <input type="radio" name="gender" value="men"> Men<br>
-                <input type="radio" name="gender" value="women"> Women<br>
-                <input type="radio" name="gender" value="both"> Both<br>
+                <input type="radio" name="preference" value="none" checked class="hidden"><br>
+                <input type="radio" name="preference" value="men"> Men<br>
+                <input type="radio" name="preference" value="women"> Women<br>
+                <input type="radio" name="preference" value="both"> Both<br>
             </form>
         </div>
 
@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button type="button" class="btn btn-success btn-lg disabled" onClick="dallinger.goToPage('experiment')">
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="dallinger.goToPage('experiment')">
                     Begin</button>
                 </div>
             </div>
@@ -36,6 +36,24 @@
 
 {% block scripts %}
     <script>
-        dallinger.createParticipant();
+        $("#begin-button").prop('disabled', true);
+        $("#radio-div").hide();
+        dallinger.createParticipant().done(function (resp) {
+            $("#begin-button").prop('disabled', true);
+
+            $('input[type=radio][name=preference]').change(function() {
+                if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
+                    $("#begin-button").prop('disabled', false);
+                    console.log("Button enabled!");
+                    console.log(this.value);
+                } else {
+                    $("#begin-button").prop('disabled', true);
+                    console.log("Button disabled!");
+                    console.log(this.value);
+                }
+            });
+
+            $("#radio-div").show();
+        });
     </script>
 {% endblock %}
