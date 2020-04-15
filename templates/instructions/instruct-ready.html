@@ -37,12 +37,13 @@
 {% block scripts %}
     <script>
         function my_function() {
-            xhr = dlgr.post('/question/' + dlgr.identity.participantId, {
+            dallinger.post('/question/' + dallinger.identity.participantId, {
                 question: "preference",
                 number: 0,
-                response: this.value
+                response:  $('input[name="preference"]:checked').val()
             }).done();{
-                 window.location = dallinger.goToPage('experiment');
+                dallinger.allowExit();
+                dallinger.goToPage('experiment');
             }
         }
 
