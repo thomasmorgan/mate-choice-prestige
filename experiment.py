@@ -10,6 +10,8 @@ from dallinger.experiment import Experiment
 from dallinger.nodes import Source
 from dallinger.models import Node
 
+from operator import attrgetter
+
 logger = logging.getLogger(__file__)
 
 
@@ -32,8 +34,8 @@ class Bartlett1932(Experiment):
         from . import models  # Import at runtime to avoid SQLAlchemy warnings
 
         self.models = models
-        self.experiment_repeats = 10
-        self.initial_recruitment_size = self.num_participants
+        self.experiment_repeats = 2
+        self.initial_recruitment_size = 5
         if session:
             self.setup()
 
@@ -60,7 +62,58 @@ class Bartlett1932(Experiment):
 
     def create_network(self):
         """Return a new network."""
-        return FullyConnected(max_size=self.num_participants + 1)
+        return FullyConnected(max_size=3)
+
+    def get_network_for_participant(self, participant):
+        # get participants preference
+        preference = participant.questions()[0].response
+        self.log("Preference is {}".format(preference))
+
+        # if its men or women:
+        if preference in ["men", "women"]:
+
+            # get all networks for that preference that are not yet full
+            available_networks = self.networks(role=preference, full=False)
+            self.log("Available networks are {}".format([str(n) for n in available_networks]))
+
+            # put them in the one with the lowest id
+            if available_networks:
+                first_network = min(available_networks, key=attrgetter('id'))
+                self.log("Putting participant in {}".format(first_network))
+                return first_network
+
+            # if there are not networks with space for their preference
+            else:
+
+                self.log("No networks available, checking for convertable network")
+                # look for any networks for the opposite preference, but that are currently totally empty
+                opposite_preference = [p for p in ["men", "women"] if p != preference][0]
+                opposite_networks = self.network(role=opposite_preference)
+                empty_networks = [net for net in opposite_networks if net.size() == 1]
+                self.log("Convertable networks: {}".format([str(n) for n in empty_networks]))
+
+            #   if one exists convert it to their preference, add them to it
+                if empty_networks:
+                    chosen_network = max(empty_networks, key=attrgetter('id'))
+                    self.log("Converting: {}".format(chosen_network))
+                    chosen_network.role = preference
+                    return chosen_network
+
+            #   else return None
+                else:
+                    self.log("No convertable networks available either, returning None")
+                    return None
+
+        # else if its both
+        else:
+            # get the earliest network for men and women, put them in the bigger of the two
+            self.log("Looking for any available networks")
+            available_networks = self.networks(full=False)
+            sizes = [n.size() for n in available_networks]
+            max_size = max(sizes)
+            biggest_network = min([n for n in available_networks if n.size() == max_size], key=attrgetter('id'))
+            self.log("Returning biggest network, {} with size {}".format(biggest_network, max_size))
+            return biggest_network
 
     def create_node(self, participant, network):
         node = Node(network=network, participant=participant)
