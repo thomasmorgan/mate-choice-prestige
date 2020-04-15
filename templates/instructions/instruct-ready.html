@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="my_function()">
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="advance()">
                     Begin</button>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 
 {% block scripts %}
     <script>
-        function my_function() {
+        function advance() {
             dallinger.post('/question/' + dallinger.identity.participantId, {
                 question: "preference",
                 number: 0,
@@ -55,12 +55,8 @@
             $('input[type=radio][name=preference]').change(function() {
                 if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
                     $("#begin-button").prop('disabled', false);
-                    console.log("Button enabled!");
-                    console.log(this.value);
                 } else {
                     $("#begin-button").prop('disabled', true);
-                    console.log("Button disabled!");
-                    console.log(this.value);
                 }
             });
 
