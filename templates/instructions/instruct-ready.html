@@ -40,9 +40,9 @@
             xhr = dlgr.post('/question/' + dlgr.identity.participantId, {
                 question: "preference",
                 number: 0,
-                response: // contents here.
+                response: this.value
             }).done() {
-                // go to experiment;
+                return dallinger.goToPage('experiment');
             }
         }
 
