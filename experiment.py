@@ -32,7 +32,7 @@ class Bartlett1932(Experiment):
         from . import models  # Import at runtime to avoid SQLAlchemy warnings
 
         self.models = models
-        self.experiment_repeats = 1
+        self.experiment_repeats = 10
         self.initial_recruitment_size = self.num_participants
         if session:
             self.setup()
@@ -52,6 +52,10 @@ class Bartlett1932(Experiment):
         if not self.networks():
             super(Bartlett1932, self).setup()
             for net in self.networks():
+                if net.id % 2 == 0:
+                    net.role = "men"
+                else:
+                    net.role = "women"
                 self.models.Questionnaire(network=net)
 
     def create_network(self):
