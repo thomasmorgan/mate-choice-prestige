@@ -34,8 +34,8 @@ class Bartlett1932(Experiment):
         from . import models  # Import at runtime to avoid SQLAlchemy warnings
 
         self.models = models
-        self.experiment_repeats = 2
-        self.initial_recruitment_size = 5
+        self.experiment_repeats = 10
+        self.initial_recruitment_size = self.num_participants
         if session:
             self.setup()
 
