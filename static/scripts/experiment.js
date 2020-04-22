@@ -1,6 +1,9 @@
 var my_node_id;
 var most_recent_question_number = 0;
-var question_json;
+var total_questions = 5;
+
+// question relevant variables
+var question_json, round, question_text, Wwer, Rwer, number, topic, round, pic;
 
 var get_info = function() {
   // Get info for node
@@ -111,7 +114,11 @@ function submit_response(response) {
     contents: response,
     details: JSON.stringify(question_json)
   }).done(function (resp) {
-    get_info();
+    if (number >= total_questions) {
+      dallinger.goToPage('faces');
+    } else {
+      get_info();
+    }
   })
   .fail(function (rejection) {
     dallinger.error(rejection);
