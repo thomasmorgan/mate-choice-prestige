@@ -81,7 +81,7 @@ class Bartlett1932(Experiment):
                 self.log("No networks available, checking for convertable network")
                 # look for any networks for the opposite preference, but that are currently totally empty
                 opposite_preference = [p for p in ["men", "women"] if p != preference][0]
-                opposite_networks = self.network(role=opposite_preference)
+                opposite_networks = self.networks(role=opposite_preference)
                 empty_networks = [net for net in opposite_networks if net.size() == 1]
                 self.log("Convertable networks: {}".format([str(n) for n in empty_networks]))
 
