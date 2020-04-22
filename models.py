@@ -1,5 +1,40 @@
 from dallinger.nodes import Source
 import json
+import random
+
+
+class FaceSource(Source):
+
+    __mapper_args__ = {"polymorphic_identity": "face_source"}
+
+    def contents(self):
+        female_faces = [124, 125, 126, 128]
+        male_faces = [1, 10, 109, 147]
+
+        if self.network.role == "men":
+            faces = ['male_images/' + str(i) + "-12.jpg" for i in male_faces]
+        elif self.network.role == "women":
+            faces = ['female_images/' + str(i) + "-12.jpg" for i in female_faces]
+        else:
+            raise ValueError("Unknown network role: {}".format(self.network.role))
+
+        random.shuffle(faces)
+
+        face_pairs = []
+        for i in range(len(faces) / 2):
+            pair = json.dumps({
+                'pair': i,
+                'face1': faces[i * 2],
+                'face2': faces[i * 2 + 1]
+            })
+            face_pairs.append(pair)
+
+        number_transmissions = len(self.infos())
+        if number_transmissions < len(face_pairs):
+            question = face_pairs[number_transmissions]
+        else:
+            question = face_pairs[-1]
+        return question
 
 
 class Questionnaire(Source):

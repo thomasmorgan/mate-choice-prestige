@@ -52,10 +52,11 @@ class Bartlett1932(Experiment):
                 else:
                     net.role = "women"
                 self.models.Questionnaire(network=net)
+                self.models.FaceSource(network=net)
 
     def create_network(self):
         """Return a new network."""
-        return FullyConnected(max_size=self.ppts_per_network + 1)
+        return FullyConnected(max_size=self.ppts_per_network + 2)
 
     def get_network_for_participant(self, participant):
         # get participants preference
@@ -118,7 +119,7 @@ class Bartlett1932(Experiment):
         network.add_node(node)
 
         if (network.full):
-            source = network.nodes(type=Source)[0]
+            source = network.nodes(type=self.models.Questionnaire)[0]
             source.transmit()
 
         for n in network.nodes():
