@@ -3,8 +3,8 @@
 import logging
 import gevent
 import traceback
+import math
 
-from dallinger.config import get_config
 from dallinger.networks import FullyConnected
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
@@ -13,11 +13,6 @@ from dallinger.models import Node
 from operator import attrgetter
 
 logger = logging.getLogger(__file__)
-
-
-def extra_parameters():
-    config = get_config()
-    config.register("num_participants", int)
 
 
 class Bartlett1932(Experiment):
@@ -34,14 +29,12 @@ class Bartlett1932(Experiment):
         from . import models  # Import at runtime to avoid SQLAlchemy warnings
 
         self.models = models
-        self.experiment_repeats = 10
-        self.initial_recruitment_size = self.num_participants
+        self.experiment_repeats = 2
+        self.ppts_per_network = 2
+        self.over_recruitment_factor = 0.25
+        self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         if session:
             self.setup()
-
-    def configure(self):
-        config = get_config()
-        self.num_participants = config.get("num_participants")
 
     def setup(self):
         """Setup the networks.
@@ -62,7 +55,7 @@ class Bartlett1932(Experiment):
 
     def create_network(self):
         """Return a new network."""
-        return FullyConnected(max_size=3)
+        return FullyConnected(max_size=self.ppts_per_network + 1)
 
     def get_network_for_participant(self, participant):
         # get participants preference
