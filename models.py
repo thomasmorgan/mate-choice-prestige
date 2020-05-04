@@ -26,6 +26,8 @@ class FaceSource(Source):
         female_faces = dist_dir_f
         male_faces = dist_dir_m
 
+        return female_faces
+
         if self.network.role == "men":
             faces = ['male_images/' + str(i) + "-12.jpg" for i in male_faces]
         elif self.network.role == "women":

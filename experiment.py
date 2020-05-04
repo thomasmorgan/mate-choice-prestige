@@ -52,7 +52,8 @@ class Bartlett1932(Experiment):
                 else:
                     net.role = "women"
                 self.models.Questionnaire(network=net)
-                self.models.FaceSource(network=net)
+                source = self.models.FaceSource(network=net)
+                self.log(source.contents())
 
     def create_network(self):
         """Return a new network."""
@@ -153,7 +154,7 @@ class Bartlett1932(Experiment):
                 for net in self.networks():
                     source = net.nodes(type=self.models.Questionnaire)[0]
                     num_questions_sent = len(source.infos())
-                    nodes = [n for n in net.nodes() if n.type != "questionnaire_source"]
+                    nodes = [n for n in net.nodes() if n.type == "node"]
                     num_questions_answered = [len(n.infos()) for n in nodes]
 
                     ready_for_next_question = num_questions_sent > 0 and all([n == num_questions_sent for n in num_questions_answered])
