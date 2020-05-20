@@ -33,6 +33,7 @@ class Bartlett1932(Experiment):
         self.ppts_per_network = 2
         self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
+        self.num_questions_in_round_1 = 5
         if session:
             self.setup()
 
@@ -147,20 +148,29 @@ class Bartlett1932(Experiment):
 
     def quiz_monitor(self):
         try:
+            round_1 = True
             quiz_ongoing = True
             while quiz_ongoing:
                 gevent.sleep(2)
                 for net in self.networks():
-                    source = net.nodes(type=self.models.Questionnaire)[0]
-                    num_questions_sent = len(source.infos())
+                    question_source = net.nodes(type=self.models.Questionnaire)[0]
+                    face_source = net.nodes(type=self.models.FaceSource)[0]
+                    num_questions_sent = len(question_source.infos()) + len(face_source.infos())
+
                     nodes = [n for n in net.nodes() if n.type == "node"]
                     num_questions_answered = [len(n.infos()) for n in nodes]
 
                     ready_for_next_question = num_questions_sent > 0 and all([n == num_questions_sent for n in num_questions_answered])
                     if ready_for_next_question:
+                        if round_1:
+                            source = question_source
+                        else:
+                            source = face_source
                         source.transmit()
                         for n in nodes:
                             n.receive()
+                        if (num_questions_sent + 1 == self.num_questions_in_round_1):
+                            round_1 = False
                         self.save()
         except Exception:
             self.log(traceback.format_exc())
