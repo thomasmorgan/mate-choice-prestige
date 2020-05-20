@@ -1,8 +1,7 @@
 from dallinger.nodes import Source
 import json
 import random
-from shutil import os
-import shutil
+import glob
 
 
 class FaceSource(Source):
@@ -10,23 +9,10 @@ class FaceSource(Source):
     __mapper_args__ = {"polymorphic_identity": "face_source"}
 
     def contents(self):
+        female_faces = glob.glob("/static/images/female_images/*.jpg")
+        male_faces = glob.glob("static/images/male_images/*.jpg")
 
-        for file in os.images:
-            if file.endswith(".jpg"):
-                src_dir = "female_images"
-                dist_dir_f = "female_faces"
-                shutil.move(src_dir, dist_dir_f)
-
-        for file in os.images:
-            if file.endswith(".jpg"):
-                src_dir = "male_images"
-                dist_dir_m = "male_faces"
-                shutil.move(src_dir, dist_dir_m)
-
-        female_faces = dist_dir_f
-        male_faces = dist_dir_m
-
-        return female_faces
+        print(female_faces)
 
         if self.network.role == "men":
             faces = ['male_images/' + str(i) + "-12.jpg" for i in male_faces]
