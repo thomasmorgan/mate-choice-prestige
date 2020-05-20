@@ -9,15 +9,13 @@ class FaceSource(Source):
     __mapper_args__ = {"polymorphic_identity": "face_source"}
 
     def contents(self):
-        female_faces = glob.glob("/static/images/female_images/*.jpg")
-        male_faces = glob.glob("static/images/male_images/*.jpg")
-
-        print(female_faces)
+        female_faces = glob.glob("./static/images/female_images/*.jpg")
+        male_faces = glob.glob("./static/images/male_images/*.jpg")
 
         if self.network.role == "men":
-            faces = ['male_images/' + str(i) + "-12.jpg" for i in male_faces]
+            faces = male_faces
         elif self.network.role == "women":
-            faces = ['female_images/' + str(i) + "-12.jpg" for i in female_faces]
+            faces = female_faces
         else:
             raise ValueError("Unknown network role: {}".format(self.network.role))
 

@@ -29,9 +29,9 @@ class Bartlett1932(Experiment):
         from . import models  # Import at runtime to avoid SQLAlchemy warnings
 
         self.models = models
-        self.experiment_repeats = 2
+        self.experiment_repeats = 1
         self.ppts_per_network = 2
-        self.over_recruitment_factor = 0.25
+        self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         if session:
             self.setup()
@@ -52,8 +52,7 @@ class Bartlett1932(Experiment):
                 else:
                     net.role = "women"
                 self.models.Questionnaire(network=net)
-                source = self.models.FaceSource(network=net)
-                self.log(source.contents())
+                self.models.FaceSource(network=net)
 
     def create_network(self):
         """Return a new network."""
