@@ -257,7 +257,8 @@ class Questionnaire(Source):
                 'Wwer': 'P',
                 'Rwer': 'K',
                 'pic': False,
-            }),json.dumps({
+            }),
+            json.dumps({
                 'question': 'What does a mycologist study?',
                 'number': 24,
                 'round': 0,
@@ -265,7 +266,8 @@ class Questionnaire(Source):
                 'Wwer': 'Mushrooms',
                 'Rwer': 'Anti-matter',
                 'pic': False,
-            }),json.dumps({
+            }),
+            json.dumps({
                 'question': 'What is the head of the Roman Catholic Church called?',
                 'number': 25,
                 'round': 0,
