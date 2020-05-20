@@ -94,6 +94,7 @@ var create_agent = function() {
     .done(function (resp) {
       $('#finish-reading').prop('disabled', false);
       my_node_id = resp.node.id;
+      store.set("my_node_id", my_node_id);
       get_info();
     })
     .fail(function (rejection) {
@@ -106,6 +107,10 @@ var create_agent = function() {
       }
     });
 };
+
+function recover_node_id() {
+  my_node_id = store.get("my_node_id");
+}
 
 function submit_response(response) {
   $("#question_div").hide();
