@@ -8,7 +8,7 @@ class FaceSource(Source):
 
     __mapper_args__ = {"polymorphic_identity": "face_source"}
 
-    def contents(self):
+    def _contents(self):
         female_faces = glob.glob("./static/images/female_images/*.jpg")
         male_faces = glob.glob("./static/images/male_images/*.jpg")
 
