@@ -8,7 +8,7 @@ class FaceSource(Source):
 
     __mapper_args__ = {"polymorphic_identity": "face_source"}
 
-    def _contents(self):
+    def create_face_pairs(self):
         female_faces = glob.glob("./static/images/female_images/*.jpg")
         male_faces = glob.glob("./static/images/male_images/*.jpg")
 
@@ -26,15 +26,24 @@ class FaceSource(Source):
             pair = json.dumps({
                 'pair': i,
                 'face1': faces[i * 2],
-                'face2': faces[i * 2 + 1]
+                'face2': faces[i * 2 + 1],
+                'round': 1,
+                'question': 'Which of these faces is best?'
             })
             face_pairs.append(pair)
 
+        self.property1 = json.dumps(face_pairs)
+
+    @property
+    def face_pairs(self):
+        return json.loads(self.property1)
+
+    def _contents(self):
         number_transmissions = len(self.infos())
-        if number_transmissions < len(face_pairs):
-            question = face_pairs[number_transmissions]
+        if number_transmissions < len(self.face_pairs):
+            question = self.face_pairs[number_transmissions]
         else:
-            question = face_pairs[-1]
+            question = self.face_pairs[-1]
         return question
 
 

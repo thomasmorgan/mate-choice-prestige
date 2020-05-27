@@ -53,7 +53,8 @@ class Bartlett1932(Experiment):
                 else:
                     net.role = "women"
                 self.models.Questionnaire(network=net)
-                self.models.FaceSource(network=net)
+                face_source = self.models.FaceSource(network=net)
+                face_source.create_face_pairs()
 
     def create_network(self):
         """Return a new network."""
