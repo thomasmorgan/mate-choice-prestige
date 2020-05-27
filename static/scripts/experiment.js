@@ -80,8 +80,6 @@ display_faces = function() {
     $("#question").html(question_text);
     $("#question_number").html("You are on question " + number + "/100");
 
-    
-
     if (Math.random() < 0.5) {
       $("#face1").attr("src", face1);
       $("#face2").attr("src", face2);
@@ -136,6 +134,7 @@ var create_agent = function() {
 
 function recover_node_id() {
   my_node_id = store.get("my_node_id");
+  most_recent_question_number = store.get("most_recent_question_number");
   get_info();
 }
 
@@ -146,6 +145,7 @@ function submit_response(response) {
     contents: response,
     details: JSON.stringify(question_json)
   }).done(function (resp) {
+    store.set("most_recent_question_number", most_recent_question_number);
     if (number >= total_questions) {
       dallinger.goToPage('faces');
     } else {
