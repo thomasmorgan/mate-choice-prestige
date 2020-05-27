@@ -3,24 +3,29 @@ var most_recent_question_number = 0;
 var total_questions = 5;
 
 // question relevant variables
-var question_json, round, question_text, Wwer, Rwer, number, topic, round, pic;
+var question_json, round, question_text, Wwer, Rwer, number, topic, round, pic, face1, face2, received_infos;
 
 var get_info = function() {
-  // Get info for node
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
-      question_json = get_max_question(resp.infos);
+      received_infos = resp.infos;
+      question_json = get_max_question(received_infos);
       if (typeof question_json != "undefined") {
-          round = question_json.round;
           question_text = question_json.question;
-          Wwer = question_json.Wwer;
-          Rwer = question_json.Rwer;
           number = question_json.number;
           most_recent_question_number = number;
-          topic = question_json.topic;
           round = question_json.round;
-          pic = question_json.pic;
-          display_question();
+          if (round == 0) {
+            pic = question_json.pic;
+            Wwer = question_json.Wwer;
+            Rwer = question_json.Rwer;
+            topic = question_json.topic;
+            display_question();  
+          } else {
+            face1 = question_json.face1;
+            face2 = question_json.face2;
+            display_faces();
+          }
       } else {
         setTimeout(function() {
           get_info();
@@ -34,27 +39,26 @@ var get_info = function() {
 };
 
 get_max_question = function(infos) {
-  var current_max_question;
-  for (i = 0; i < infos.length; i++) {
-    this_info = JSON.parse(infos[i].contents);
-    if (this_info.number > most_recent_question_number) {
-      most_recent_question_number = this_info.number;
-      current_max_question = this_info;
+  if (infos.length == 0) { return undefined; }
+
+  newest_info = infos[0];
+  for (i = 1; i < infos.length; i++) {
+    if (infos[i].id > newest_info.id) {
+      newest_info = infos[i];
     }
   }
-  return(current_max_question);
+
+  if (JSON.parse(newest_info.contents).number == most_recent_question_number) {
+    return undefined;
+  } else {
+    return(JSON.parse(newest_info.contents));
+  }
 };
 
 // display the question
 display_question = function() {
     $("#question").html(question_text);
     $("#question_number").html("You are on question " + number + "/100");
-    
-    if (pic == true) {
-        show_pics(number);
-    } else {
-        hide_pics();
-    }
 
     if (Math.random() < 0.5) {
       assign_button("a", Wwer);
@@ -62,6 +66,28 @@ display_question = function() {
     } else {
       assign_button("a", Rwer);
       assign_button("b", Wwer);
+    }
+    
+    countdown = 15;
+    $("#countdown").html(countdown);
+    $("#question_div").show();
+    $("#wait_div").hide();
+    // start_answer_timeout();
+};
+
+// display the question
+display_faces = function() {
+    $("#question").html(question_text);
+    $("#question_number").html("You are on question " + number + "/100");
+
+    
+
+    if (Math.random() < 0.5) {
+      $("#face1").attr("src", face1);
+      $("#face2").attr("src", face2);
+    } else {
+      $("#face1").attr("src", face2);
+      $("#face2").attr("src", face1);
     }
     
     countdown = 15;
@@ -110,6 +136,7 @@ var create_agent = function() {
 
 function recover_node_id() {
   my_node_id = store.get("my_node_id");
+  get_info();
 }
 
 function submit_response(response) {
