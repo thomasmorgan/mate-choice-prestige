@@ -24,7 +24,7 @@ class FaceSource(Source):
         face_pairs = []
         for i in range(int(len(faces) / 2)):
             pair = json.dumps({
-                'pair': i,
+                'number': i + 1,
                 'face1': faces[i * 2],
                 'face2': faces[i * 2 + 1],
                 'round': 1,
