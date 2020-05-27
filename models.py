@@ -22,7 +22,7 @@ class FaceSource(Source):
         random.shuffle(faces)
 
         face_pairs = []
-        for i in range(len(faces) / 2):
+        for i in range(int(len(faces) / 2)):
             pair = json.dumps({
                 'pair': i,
                 'face1': faces[i * 2],
