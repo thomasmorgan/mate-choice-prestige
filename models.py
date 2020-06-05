@@ -64,7 +64,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',###Can we chagne the name of this to pretest? or is pracice called somewhere else?
                 'Wwer': 'Reptiles',
-                'Rwer': 'Fish',
+                'right_answer': 'Fish',
                 'pic': False,### Do we want photos to be assocaiated with the pretest questions?
             }),
             json.dumps({
@@ -73,7 +73,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Dinar',
-                'Rwer': 'Yen',
+                'right_answer': 'Yen',
                 'pic': False,
             }),
             json.dumps({
@@ -82,7 +82,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Red and Blue',
-                'Rwer': 'Blue and Yellow',
+                'right_answer': 'Blue and Yellow',
                 'pic': False,
             }),
             json.dumps({
@@ -91,7 +91,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Spain',
-                'Rwer': 'Italy',
+                'right_answer': 'Italy',
                 'pic': False,
             }),
             json.dumps({
@@ -100,7 +100,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Elephant',
-                'Rwer': 'Giraffe',
+                'right_answer': 'Giraffe',
                 'pic': False,
             }),
             json.dumps({
@@ -109,7 +109,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'A medical device',
-                'Rwer': 'A musical instrument',
+                'right_answer': 'A musical instrument',
                 'pic': False,
             }),
             json.dumps({
@@ -118,7 +118,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': '19',
-                'Rwer': '21',
+                'right_answer': '21',
                 'pic': False,
             }),
             json.dumps({
@@ -127,7 +127,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Leonardo da Vinci',
-                'Rwer': 'William Shakespeare',
+                'right_answer': 'William Shakespeare',
                 'pic': False,
             }),
             json.dumps({
@@ -136,7 +136,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': '1942',
-                'Rwer': '1945',
+                'right_answer': '1945',
                 'pic': False,
             }),
             json.dumps({
@@ -145,7 +145,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Bolivia',
-                'Rwer': 'Canada',
+                'right_answer': 'Canada',
                 'pic': False,
             }),
             json.dumps({
@@ -154,7 +154,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Ancient human civilizations',
-                'Rwer': 'Dinosaur fossils',
+                'right_answer': 'Dinosaur fossils',
                 'pic': False,
             }),
             json.dumps({
@@ -163,7 +163,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'An intense lightining storm',
-                'Rwer': 'The explosion of a star',
+                'right_answer': 'The explosion of a star',
                 'pic': False,
             }),
             json.dumps({
@@ -172,7 +172,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'X-ray vision',
-                'Rwer': 'Echolocation',
+                'right_answer': 'Echolocation',
                 'pic': False,
             }),
             json.dumps({
@@ -181,7 +181,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Seismograph',
-                'Rwer': 'Polygraph',
+                'right_answer': 'Polygraph',
                 'pic': False,
             }),
             json.dumps({
@@ -190,7 +190,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'A Spanish dessert',
-                'Rwer': 'An Australian mammal',
+                'right_answer': 'An Australian mammal',
                 'pic': False,
             }),
             json.dumps({
@@ -199,7 +199,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Monaco',
-                'Rwer': 'Vatican City',
+                'right_answer': 'Vatican City',
                 'pic': False,
             }),
             json.dumps({
@@ -208,7 +208,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Alexander Graham Bell',
-                'Rwer': 'Thomas Edison',
+                'right_answer': 'Thomas Edison',
                 'pic': False,
             }),
             json.dumps({
@@ -217,7 +217,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Persephone',
-                'Rwer': 'Demeter',
+                'right_answer': 'Demeter',
                 'pic': False,
             }),
             json.dumps({
@@ -226,7 +226,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'The study of hieroglyphs',
-                'Rwer': 'The art of making wood engravings',
+                'right_answer': 'The art of making wood engravings',
                 'pic': False,
             }),
             json.dumps({
@@ -235,7 +235,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': '42',
-                'Rwer': '0',
+                'right_answer': '0',
                 'pic': False,
             }),
             json.dumps({
@@ -244,7 +244,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Nile',
-                'Rwer': 'Mississippi',
+                'right_answer': 'Mississippi',
                 'pic': False,
             }),
             json.dumps({
@@ -253,7 +253,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Friedrich Nietzsche',
-                'Rwer': 'Rene Descartes',
+                'right_answer': 'Rene Descartes',
                 'pic': False,
             }),
             json.dumps({
@@ -262,7 +262,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'P',
-                'Rwer': 'K',
+                'right_answer': 'K',
                 'pic': False,
             }),
             json.dumps({
@@ -271,7 +271,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Mushrooms',
-                'Rwer': 'Anti-matter',
+                'right_answer': 'Anti-matter',
                 'pic': False,
             }),
             json.dumps({
@@ -280,7 +280,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Preacher',
-                'Rwer': 'Pope',
+                'right_answer': 'Pope',
                 'pic': False,
             }),
             json.dumps({
@@ -289,7 +289,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Lebanon',
-                'Rwer': 'Syria',
+                'right_answer': 'Syria',
                 'pic': False,
             }),
             json.dumps({
@@ -298,7 +298,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Respiration',
-                'Rwer': 'Photosynthesis',
+                'right_answer': 'Photosynthesis',
                 'pic': False,
             }),
             json.dumps({
@@ -307,7 +307,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Respiration',
-                'Rwer': 'Photosynthesis',
+                'right_answer': 'Photosynthesis',
                 'pic': False,
             }),
             json.dumps({
@@ -316,7 +316,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'Chronic',
-                'Rwer': 'Acute',
+                'right_answer': 'Acute',
                 'pic': False,
             }),
             json.dumps({
@@ -325,7 +325,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': 'A comma',
-                'Rwer': 'A semicolon',
+                'right_answer': 'A semicolon',
                 'pic': False,
             }),
             json.dumps({
@@ -334,7 +334,7 @@ class Questionnaire(Source):
                 'round': 0,
                 'topic': 'Practice',
                 'Wwer': '9',
-                'Rwer': '6',
+                'right_answer': '6',
                 'pic': False,
             }),
         ]
