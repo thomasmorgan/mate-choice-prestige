@@ -3,7 +3,7 @@ var most_recent_question_number = 0;
 var total_questions = 5;
 
 // question relevant variables
-var question_json, round, question_text, Wwer, right_answer, number, topic, round, pic, face1, face2, received_infos;
+var question_json, round, question_text, wrong_answer, right_answer, number, topic, round, pic, face1, face2, received_infos;
 
 var get_info = function() {
   dallinger.getReceivedInfos(my_node_id)
@@ -17,7 +17,8 @@ var get_info = function() {
           round = question_json.round;
           if (round == 0) {
             pic = question_json.pic;
-            Wwer = question_json.Wwer;
+            
+wrong_answer = question_json.wrong_answer;
             right_answer = question_json.right_answer;
             topic = question_json.topic;
             display_question();  
@@ -61,11 +62,11 @@ display_question = function() {
     $("#question_number").html("You are on question " + number + "/100");
 
     if (Math.random() < 0.5) {
-      assign_button("a", Wwer);
+      assign_button("a", wrong_answer);
       assign_button("b", right_answer);
     } else {
       assign_button("a", right_answer);
-      assign_button("b", Wwer);
+      assign_button("b", wrong_answer);
     }
     
     countdown = 15;
