@@ -3,7 +3,7 @@ var most_recent_question_number = 0;
 var total_questions = 5;
 
 // question relevant variables
-var question_json, round, question_text, wrong_answer, right_answer, number, topic, round, pic, face1, face2, received_infos;
+var question_json, round, question_text, wrong_answer, right_answer, number, round, pic, face1, face2, received_infos;
 
 var get_info = function() {
   dallinger.getReceivedInfos(my_node_id)
@@ -20,7 +20,6 @@ var get_info = function() {
             
 wrong_answer = question_json.wrong_answer;
             right_answer = question_json.right_answer;
-            topic = question_json.topic;
             display_question();  
           } else {
             face1 = question_json.face1;
