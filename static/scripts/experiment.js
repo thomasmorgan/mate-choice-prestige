@@ -58,7 +58,7 @@ get_max_question = function(infos) {
 // display the question
 display_question = function() {
     $("#question").html(question_text);
-    $("#question_number").html("You are on question " + number + "/100");
+    $("#question_number").html("You are on question " + number + " of 30");
 
     if (Math.random() < 0.5) {
       assign_button("a", wrong_answer);
@@ -78,7 +78,7 @@ display_question = function() {
 // display the question
 display_faces = function() {
     $("#question").html(question_text);
-    $("#question_number").html("You are on question " + number + "/100");
+    $("#question_number").html("You are on face " + number + " of 30");
 
     if (Math.random() < 0.5) {
       $("#face1").attr("src", face1);
