@@ -3,7 +3,7 @@ var most_recent_question_number = 0;
 var total_questions = 5;
 
 // question relevant variables
-var question_json, round, question_text, wrong_answer, right_answer, number, round, pic, face1, face2, received_infos;
+var question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, received_infos;
 
 var get_info = function() {
   dallinger.getReceivedInfos(my_node_id)
@@ -16,9 +16,7 @@ var get_info = function() {
           most_recent_question_number = number;
           round = question_json.round;
           if (round == 0) {
-            pic = question_json.pic;
-            
-wrong_answer = question_json.wrong_answer;
+            wrong_answer = question_json.wrong_answer;
             right_answer = question_json.right_answer;
             display_question();  
           } else {
@@ -100,15 +98,6 @@ assign_button = function(button, answer) {
   $(button_name).html(answer);
   $(button_name).unbind('click');
   $(button_name).click(function() { submit_response(answer); });
-};
-
-hide_pics = function() {
-    $("#pics").hide();
-};
-
-show_pics = function(number) {
-    $("#pics").attr("src", "/static/images/" + number + ".png");
-    $("#pics").show();
 };
 
 // Create the agent.

@@ -64,7 +64,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Reptiles',
                 'right_answer': 'Fish',
-                'pic': False,### Do we want photos to be assocaiated with the pretest questions?
             }),
             json.dumps({
                 'question': 'What is the currency used in Japan?',
@@ -72,7 +71,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Dinar',
                 'right_answer': 'Yen',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Which colors make green when mixed together?',
@@ -80,7 +78,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Red and Blue',
                 'right_answer': 'Blue and Yellow',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'In what country is the Leaning Tower of Pisa located?',
@@ -88,7 +85,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Spain',
                 'right_answer': 'Italy',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the tallest animal in the world?',
@@ -96,7 +92,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Elephant',
                 'right_answer': 'Giraffe',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is a xylophone?',
@@ -104,7 +99,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'A medical device',
                 'right_answer': 'A musical instrument',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'How many dots are on a six-sided die?',
@@ -112,7 +106,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': '19',
                 'right_answer': '21',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Who wrote Hamlet?',
@@ -120,7 +113,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Leonardo da Vinci',
                 'right_answer': 'William Shakespeare',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What year did World War II end?',
@@ -128,7 +120,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': '1942',
                 'right_answer': '1945',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Ottawa is the capital of which country?',
@@ -136,7 +127,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Bolivia',
                 'right_answer': 'Canada',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What do paleontologists study?',
@@ -144,7 +134,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Ancient human civilizations',
                 'right_answer': 'Dinosaur fossils',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is a supernova?',
@@ -152,7 +141,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'An intense lightining storm',
                 'right_answer': 'The explosion of a star',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'How can bats fly in the dark?',
@@ -160,7 +148,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'X-ray vision',
                 'right_answer': 'Echolocation',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the technical term for a lie detector test?',
@@ -168,7 +155,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Seismograph',
                 'right_answer': 'Polygraph',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is an echidna?',
@@ -176,7 +162,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'A Spanish dessert',
                 'right_answer': 'An Australian mammal',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the smallest country in the world?',
@@ -184,7 +169,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Monaco',
                 'right_answer': 'Vatican City',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Who invented the light bulb?',
@@ -192,7 +176,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Alexander Graham Bell',
                 'right_answer': 'Thomas Edison',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'In Greek mythology, who is the Goddess of Agriculture?',
@@ -200,7 +183,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Persephone',
                 'right_answer': 'Demeter',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is Xylography?',
@@ -208,7 +190,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'The study of hieroglyphs',
                 'right_answer': 'The art of making wood engravings',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'How many bones are in an elephant trunk?',
@@ -216,7 +197,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': '42',
                 'right_answer': '0',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the longest river in the world?',
@@ -224,7 +204,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Nile',
                 'right_answer': 'Mississippi',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Which philosopher said, "I think, therefore I am"?',
@@ -232,7 +211,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Friedrich Nietzsche',
                 'right_answer': 'Rene Descartes',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the chemical symbol for potassium?',
@@ -240,7 +218,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'P',
                 'right_answer': 'K',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What does a mycologist study?',
@@ -248,7 +225,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Mushrooms',
                 'right_answer': 'Anti-matter',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What is the head of the Roman Catholic Church called?',
@@ -256,7 +232,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Preacher',
                 'right_answer': 'Pope',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Damascus is the capital of which country?',
@@ -264,7 +239,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Lebanon',
                 'right_answer': 'Syria',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What do plants need light for?',
@@ -272,7 +246,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Respiration',
                 'right_answer': 'Photosynthesis',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'What do plants need light for?',
@@ -280,7 +253,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Respiration',
                 'right_answer': 'Photosynthesis',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Which word means "severe and intense"?',
@@ -288,7 +260,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'Chronic',
                 'right_answer': 'Acute',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'Which punctuation mark indicates a longer pause?',
@@ -296,7 +267,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': 'A comma',
                 'right_answer': 'A semicolon',
-                'pic': False,
             }),
             json.dumps({
                 'question': 'How many different colors are on the flag of South Africa?',
@@ -304,7 +274,6 @@ class Questionnaire(Source):
                 'round': 0,
                 'wrong_answer': '9',
                 'right_answer': '6',
-                'pic': False,
             }),
         ]
 
