@@ -98,12 +98,19 @@ display_faces = function() {
     $("#wait_div").hide();
     // start_answer_timeout();
 };
+
+choose_face = function() {
+  $("#face1").click(function() { submit_response(face1); });
+  $("#face2").click(function() { submit_response(face2); });
+};
+
 //assign_face = function(button, answer) {
-  //button_name = "#submit-" + button;
-  //$(button_name).html(answer);
-  //$(button_name).unbind('click');
-  //$(button_name).click(function() { submit_response(answer); });
+  //face_button = "#submit-" + face;
+  //$(face_button).html(answer);
+  //$(face_button).unbind('click');
+  //$(face_button).click(function() { submit_response(answer); });
 //};
+
 // Create the agent.
 var create_agent = function() {
   $('#finish-reading').prop('disabled', true);
