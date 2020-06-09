@@ -92,6 +92,8 @@ display_faces = function() {
       $("#face2").attr("src", face1);
     }
 
+    $("#face1").unbind('click');
+    $("#face2").unbind('click');
     $("#face1").click(function() { submit_response(face1); });
     $("#face2").click(function() { submit_response(face2); });
     
