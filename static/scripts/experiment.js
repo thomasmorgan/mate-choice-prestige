@@ -91,17 +91,15 @@ display_faces = function() {
       $("#face1").attr("src", face2);
       $("#face2").attr("src", face1);
     }
+
+    $("#face1").click(function() { submit_response(face1); });
+    $("#face2").click(function() { submit_response(face2); });
     
     countdown = 15;
     $("#countdown").html(countdown);
     $("#question_div").show();
     $("#wait_div").hide();
     // start_answer_timeout();
-};
-
-choose_face = function() {
-  $("#face1").click(function() { submit_response(face1); });
-  $("#face2").click(function() { submit_response(face2); });
 };
 
 //assign_face = function(button, answer) {
