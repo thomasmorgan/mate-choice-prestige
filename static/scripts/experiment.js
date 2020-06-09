@@ -73,7 +73,13 @@ display_question = function() {
     // start_answer_timeout();
 };
 
-// display the question
+assign_button = function(button, answer) {
+  button_name = "#submit-" + button;
+  $(button_name).html(answer);
+  $(button_name).unbind('click');
+  $(button_name).click(function() { submit_response(answer); });
+};
+
 display_faces = function() {
     $("#question").html(question_text);
     $("#question_number").html("You are on face " + number + " of 30");
@@ -92,14 +98,12 @@ display_faces = function() {
     $("#wait_div").hide();
     // start_answer_timeout();
 };
-
-assign_button = function(button, answer) {
-  button_name = "#submit-" + button;
-  $(button_name).html(answer);
-  $(button_name).unbind('click');
-  $(button_name).click(function() { submit_response(answer); });
-};
-
+//assign_face = function(button, answer) {
+  //button_name = "#submit-" + button;
+  //$(button_name).html(answer);
+  //$(button_name).unbind('click');
+  //$(button_name).click(function() { submit_response(answer); });
+//};
 // Create the agent.
 var create_agent = function() {
   $('#finish-reading').prop('disabled', true);
