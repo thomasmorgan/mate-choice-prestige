@@ -93,6 +93,8 @@ class Bartlett1932(Experiment):
                     chosen_network = max(empty_networks, key=attrgetter('id'))
                     self.log("Converting: {}".format(chosen_network))
                     chosen_network.role = preference
+                    face_source = chosen_network.nodes(type=self.models.FaceSource)[0]
+                    face_source.create_face_pairs()
                     return chosen_network
 
             #   else return None
