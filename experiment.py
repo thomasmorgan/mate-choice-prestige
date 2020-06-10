@@ -129,7 +129,7 @@ class Bartlett1932(Experiment):
                 n.receive()
 
     def info_post_request(self, node, info):
-        if info.contents == info.details["right_answer"]:
+        if info.details["round"] == 0 and info.contents == info.details["right_answer"]:
             details = node.details.copy()
             details["score"] = details["score"] + 1
             node.details = details
