@@ -1,4 +1,5 @@
 from dallinger.nodes import Source
+from dallinger.networks import FullyConnected
 from dallinger.models import Info
 import json
 import random
@@ -18,6 +19,21 @@ class FaceAnswer1(Info):
 class FaceAnswer2(Info):
 
     __mapper_args__ = {"polymorphic_identity": "face_answer_2"}
+
+
+class FaceNetwork(FullyConnected):
+
+    __mapper_args__ = {"polymorphic_identity": "face_network"}
+
+    @property
+    def round(self):
+        return int(self.property1)
+
+    @round.setter
+    def round(self, round):
+        """Assign fitness to property1."""
+        self.property1 = repr(round)
+
 
 class FaceSource(Source):
 
