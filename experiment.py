@@ -150,6 +150,7 @@ class Bartlett1932(Experiment):
     def background_tasks(self):
         return [
             self.quiz_monitor,
+            self.face_monitor
         ]
 
     def quiz_monitor(self):
