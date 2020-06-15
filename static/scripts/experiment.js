@@ -141,8 +141,10 @@ function recover_node_id() {
 function submit_response(response) {
   $("#question_div").hide();
   $("#wait_div").show();
+  var types = ["QuizAnswer", "FaceAnswer1"];
   dallinger.createInfo(my_node_id, {
     contents: response,
+    info_type: types[round],
     details: JSON.stringify(question_json)
   }).done(function (resp) {
     store.set("most_recent_question_number", most_recent_question_number);
