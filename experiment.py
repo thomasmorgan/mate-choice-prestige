@@ -33,6 +33,9 @@ class Bartlett1932(Experiment):
         self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         self.num_questions_in_round_0 = 5
+        self.known_classes["QuizAnswer"] = self.models.QuizAnswer
+        self.known_classes["FaceAnswer1"] = self.models.FaceAnswer1
+        self.known_classes["FaceAnswer2"] = self.models.FaceAnswer2
         if session:
             self.setup()
 
