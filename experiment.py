@@ -5,7 +5,6 @@ import gevent
 import traceback
 import math
 
-from dallinger.networks import FullyConnected
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
 from dallinger.models import Node
@@ -57,8 +56,9 @@ class Bartlett1932(Experiment):
                 face_source.create_face_pairs()
 
     def create_network(self):
-        """Return a new network."""
-        return FullyConnected(max_size=self.ppts_per_network + 2)
+        net = self.models.FaceNetwork(max_size=self.ppts_per_network + 2)
+        net.round = 0
+        return net
 
     def get_network_for_participant(self, participant):
         # get participants preference
