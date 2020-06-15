@@ -157,23 +157,47 @@ class Bartlett1932(Experiment):
                 gevent.sleep(2)
                 for net in self.networks():
                     question_source = net.nodes(type=self.models.Questionnaire)[0]
-                    face_source = net.nodes(type=self.models.FaceSource)[0]
-                    num_questions_sent = len(question_source.infos()) + len(face_source.infos())
+                    num_questions_sent = len(question_source.infos())
 
                     nodes = [n for n in net.nodes() if n.type == "node"]
                     num_questions_answered = [len(n.infos()) for n in nodes]
 
                     ready_for_next_question = num_questions_sent > 0 and all([n == num_questions_sent for n in num_questions_answered])
                     if ready_for_next_question:
-                        if round_0:
-                            source = question_source
-                        else:
-                            source = face_source
-                        source.transmit()
+                        question_source.transmit()
                         for n in nodes:
                             n.receive()
-                        if (num_questions_sent + 1 == self.num_questions_in_round_0):
-                            round_0 = False
-                        self.save()
+                    if (num_questions_sent == self.num_questions_in_round_0):
+                        round_1 = True
+                        while round_1:
+                            gevent.sleep()
+                        # give property to make the face_monitor asleep during round 0
+                    self.save()
+        except Exception:
+            self.log(traceback.format_exc())
+
+    def face_monitor(self):
+        try:
+            round_1 = True
+            quiz_ongoing = True
+            while quiz_ongoing:
+                gevent.sleep(2)
+                for net in self.networks():
+                    face_source = net.nodes(type=self.models.FaceSource)[0]
+                    num_faces_sent = len(face_source.infos())
+
+                    nodes = [n for n in net.nodes() if n.type == "node"]
+                    num_faces_answered = [len(n.infos()) for n in nodes]  # should this be len(face_source.infos()) if we are seperating the questionnaire from the faces?
+
+                    ready_for_next_question = num_faces_sent > 0 and all([n == num_faces_sent for n in num_faces_answered])
+                    if ready_for_next_question:
+                        face_source.transmit()
+                        for n in nodes:
+                            n.receive()
+                    if (num_faces_sent == self.num_questions_in_round_1):  # is this num_questions_in_round_1 or num_faces_in_round_1?
+                        round_0 = True
+                        while round_0:
+                            gevent.sleep()
+                    self.save()
         except Exception:
             self.log(traceback.format_exc())
