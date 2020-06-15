@@ -1,8 +1,23 @@
 from dallinger.nodes import Source
+from dallinger.models import Info
 import json
 import random
 import glob
 
+
+class QuizAnswer(Info):
+
+    __mapper_args__ = {"polymorphic_identity": "quiz_answer"}
+
+
+class FaceAnswer1(Info):
+
+    __mapper_args__ = {"polymorphic_identity": "face_answer_1"}
+
+
+class FaceAnswer2(Info):
+
+    __mapper_args__ = {"polymorphic_identity": "face_answer_2"}
 
 class FaceSource(Source):
 
