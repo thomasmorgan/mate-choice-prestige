@@ -84,18 +84,19 @@ display_faces = function() {
     $("#question").html(question_text);
     $("#question_number").html("You are on face " + number + " of 30");
 
+    $("#face1").unbind('click');
+    $("#face2").unbind('click');
     if (Math.random() < 0.5) {
       $("#face1").attr("src", face1);
       $("#face2").attr("src", face2);
+      $("#face1").click(function() { submit_response(face1); });
+      $("#face2").click(function() { submit_response(face2); });
     } else {
       $("#face1").attr("src", face2);
       $("#face2").attr("src", face1);
+      $("#face1").click(function() { submit_response(face2); });
+      $("#face2").click(function() { submit_response(face1); });
     }
-
-    $("#face1").unbind('click');
-    $("#face2").unbind('click');
-    $("#face1").click(function() { submit_response(face1); });
-    $("#face2").click(function() { submit_response(face2); });
     
     countdown = 15;
     $("#countdown").html(countdown);
