@@ -191,3 +191,9 @@ class Bartlett1932(Experiment):
                     self.save()
         except Exception:
             self.log(traceback.format_exc())
+
+    def get_answer_summary(self):
+        info = Info(network=network, participant=participant, info=info)
+        info.contents = {}
+        self.log(info.contents)
+        return info.contents
