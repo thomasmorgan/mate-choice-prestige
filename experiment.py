@@ -194,10 +194,7 @@ class Bartlett1932(Experiment):
 
     def get_answer_summary(self, network):
         # the goal of this function is to collate the answers of all participants in the network, and create a summary of them
-        # this line, however, makes a new info. Remember that Class(arguments) is the command to make a new instance of a class, not get existing ones
-        # so you can delete it
-        info = Info(network=network, participant=participant, info=info)
-
+        
         # to get the infos you need to do something like this:
         # first get all the nodes in the network
         # note the function now need to be passed 'network' as an argument
@@ -206,8 +203,3 @@ class Bartlett1932(Experiment):
         answers = [max(n.infos(type=self.model.FaceAnswer1), key=attrgetter("id")) for n in nodes]
 
         # now we need to somehow build a summary of these answers, but I'll let you have a go at this first
-
-        # this stuff will end up replaced/deleted
-        info.contents = {}
-        self.log(info.contents)
-        return info.contents
