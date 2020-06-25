@@ -4,6 +4,7 @@ import logging
 import gevent
 import traceback
 import math
+import json
 
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
@@ -194,7 +195,7 @@ class Bartlett1932(Experiment):
 
     def get_answer_summary(self, network):
         # the goal of this function is to collate the answers of all participants in the network, and create a summary of them
-        
+
         # to get the infos you need to do something like this:
         # first get all the nodes in the network
         # note the function now need to be passed 'network' as an argument
@@ -203,3 +204,6 @@ class Bartlett1932(Experiment):
         answers = [max(n.infos(type=self.model.FaceAnswer1), key=attrgetter("id")) for n in nodes]
 
         # now we need to somehow build a summary of these answers, but I'll let you have a go at this first
+        return str(answers)
+        self.save()
+        self.log(str(answers))
