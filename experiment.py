@@ -186,6 +186,12 @@ class Bartlett1932(Experiment):
                     num_faces_answered = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
 
                     if all([n == num_faces_sent for n in num_faces_answered]):
+                        # you are right that the function will never run unless called. So I'm calling it here.
+                        # this says to call the function when everyone has answered the question
+                        summary = self.get_answer_summary()
+
+                        # but it will still tell the source to send the next question, not what we want, but otherwise the function
+                        # will loop every 2s and repeatedly get the answer summary
                         face_source.transmit()
                         for n in nodes:
                             n.receive()
@@ -204,6 +210,17 @@ class Bartlett1932(Experiment):
         answers = [max(n.infos(type=self.model.FaceAnswer1), key=attrgetter("id")) for n in nodes]
 
         # now we need to somehow build a summary of these answers, but I'll let you have a go at this first
-        return str(answers)
+
+        # to look at the contents you could try something like this, but you probably want something a little more sophisticated
+        contentss = [a.contents for a in answers]
+
+        # you can print this above the return statement
+        self.log(contentss)
+
+        # and you might want to return it.
+        return contentss
+
+        # statements after a return statement will *never* run, return means stop execution of this function and go back to whatever called it.
+        # these can safely be deleted.
         self.save()
         self.log(str(answers))
