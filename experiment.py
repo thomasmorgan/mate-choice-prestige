@@ -188,7 +188,7 @@ class Bartlett1932(Experiment):
                     if all([n == num_faces_sent for n in num_faces_answered]):
                         # you are right that the function will never run unless called. So I'm calling it here.
                         # this says to call the function when everyone has answered the question
-                        summary = self.get_answer_summary()
+                        self.get_answer_summary()
 
                         # but it will still tell the source to send the next question, not what we want, but otherwise the function
                         # will loop every 2s and repeatedly get the answer summary
@@ -221,4 +221,3 @@ class Bartlett1932(Experiment):
         return contentss
 
         # statements after a return statement will *never* run, return means stop execution of this function and go back to whatever called it.
-        
