@@ -188,7 +188,8 @@ class Bartlett1932(Experiment):
                     if all([n == num_faces_sent for n in num_faces_answered]):
                         # you are right that the function will never run unless called. So I'm calling it here.
                         # this says to call the function when everyone has answered the question
-                        self.get_answer_summary()
+                        if num_faces_sent > 0:
+                            self.get_answer_summary(net)
 
                         # but it will still tell the source to send the next question, not what we want, but otherwise the function
                         # will loop every 2s and repeatedly get the answer summary
@@ -201,23 +202,26 @@ class Bartlett1932(Experiment):
 
     def get_answer_summary(self, network):
         # the goal of this function is to collate the answers of all participants in the network, and create a summary of them
+        summary = []
 
         # to get the infos you need to do something like this:
         # first get all the nodes in the network
         # note the function now need to be passed 'network' as an argument
         nodes = [n for n in network.nodes() if n.type == "node"]
         # the get each nodes most recent answer
-        answers = [max(n.infos(type=self.model.FaceAnswer1), key=attrgetter("id")) for n in nodes]
+        answers = [max(n.infos(type=self.models.FaceAnswer1), key=attrgetter("id")).contents for n in nodes]
 
-        # now we need to somehow build a summary of these answers, but I'll let you have a go at this first
-
-        # to look at the contents you could try something like this, but you probably want something a little more sophisticated
-        contentss = [a.contents for a in answers]
+        for node, answer in zip(nodes, answers):
+            summary.append({
+                "id": node.id,
+                "score": node.details["score"],
+                "face": answer
+            })
 
         # you can print this above the return statement
-        self.log(contentss)
+        self.log(summary)
 
         # and you might want to return it.
-        return contentss
+        return summary
 
         # statements after a return statement will *never* run, return means stop execution of this function and go back to whatever called it.
