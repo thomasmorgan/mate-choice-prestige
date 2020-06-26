@@ -221,6 +221,4 @@ class Bartlett1932(Experiment):
         return contentss
 
         # statements after a return statement will *never* run, return means stop execution of this function and go back to whatever called it.
-        # these can safely be deleted.
-        self.save()
-        self.log(str(answers))
+        
