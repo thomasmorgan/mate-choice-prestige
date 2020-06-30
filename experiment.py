@@ -37,6 +37,8 @@ class Bartlett1932(Experiment):
         self.known_classes["QuizAnswer"] = self.models.QuizAnswer
         self.known_classes["FaceAnswer1"] = self.models.FaceAnswer1
         self.known_classes["FaceAnswer2"] = self.models.FaceAnswer2
+        self.known_classes["FacePairs"] = self.models.FacePairs
+        self.known_classes["Summary"] = self.models.Summary
         if session:
             self.setup()
 
