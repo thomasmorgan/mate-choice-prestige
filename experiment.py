@@ -184,7 +184,7 @@ class Bartlett1932(Experiment):
                 gevent.sleep(2)
                 for net in [n for n in self.networks() if n.round == 1]:
                     face_source = net.nodes(type=self.models.FaceSource)[0]
-                    num_faces_sent = len(face_source.infos())
+                    num_faces_sent = len(face_source.infos(type=self.models.FacePairs))
                     nodes = [n for n in net.nodes() if n.type == "node"]
                     num_faces_answered = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
 
