@@ -207,7 +207,8 @@ class Bartlett1932(Experiment):
 
                         # if the same number of summaries and face pairs have been sent, send a face pair
                         elif num_summaries_sent == num_faces_sent:
-                            face_source.transmit()
+                            face_pair = self.models.FacePairs(contents=face_source._contents(), origin=face_source)
+                            face_source.transmit(what=face_pair)
                             for n in nodes:
                                 n.receive()
 
