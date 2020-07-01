@@ -218,7 +218,8 @@ class Bartlett1932(Experiment):
         # first get all the nodes in the network
         # note the function now need to be passed 'network' as an argument
         nodes = [n for n in network.nodes() if n.type == "node"]
-        # the get each nodes most recent answer
+
+        # the get each nodes most recent answer (i.e. the FaceAnswer1 with the greatest id value)
         answers = [max(n.infos(type=self.models.FaceAnswer1), key=attrgetter("id")).contents for n in nodes]
 
         for node, answer in zip(nodes, answers):
