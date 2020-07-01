@@ -1,29 +1,40 @@
 var my_node_id;
 var most_recent_question_number = 0;
+var most_recent_info_id = 0;
 var total_questions = 5;
 
 // question relevant variables
-var question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, received_infos;
+var newest_info, question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, received_infos;
 
 var get_info = function() {
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
       received_infos = resp.infos;
-      question_json = get_max_question(received_infos);
-      if (typeof question_json != "undefined") {
+      newest_info = get_max_question(received_infos);
+      if (typeof newest_info != "undefined") {
+        if (newest_info.type == "info") {
+          question_json = JSON.parse(newest_info.contents);
           question_text = question_json.question;
           number = question_json.number;
           most_recent_question_number = number;
           round = question_json.round;
-          if (round == 0) {
-            wrong_answer = question_json.wrong_answer;
-            right_answer = question_json.right_answer;
-            display_question();  
-          } else {
-            face1 = question_json.face1;
-            face2 = question_json.face2;
-            display_faces();
-          }
+          wrong_answer = question_json.wrong_answer;
+          right_answer = question_json.right_answer;
+          display_question();  
+        } else if (newest_info.type == "face_pairs") {
+          // do stuff here.
+          question_json = JSON.parse(newest_info.contents);
+          question_text = question_json.question;
+          number = question_json.number;
+          most_recent_question_number = number;
+          round = question_json.round;
+          face1 = question_json.face1;
+          face2 = question_json.face2;
+          display_faces();
+        } else if (newest_info.type == "summary") {
+          // do more stuff
+          // put the various bits of info into the table, etc
+        }
       } else {
         setTimeout(function() {
           get_info();
@@ -46,10 +57,13 @@ get_max_question = function(infos) {
     }
   }
 
-  if (JSON.parse(newest_info.contents).number == most_recent_question_number) {
+  // if (JSON.parse(newest_info.contents).number == most_recent_question_number) {
+  if (newest_info.id == most_recent_info_id) {
     return undefined;
   } else {
-    return(JSON.parse(newest_info.contents));
+    //return(JSON.parse(newest_info.contents));
+    most_recent_info_id = newest_info.id;
+    return newest_info;
   }
 };
 
@@ -136,6 +150,7 @@ var create_agent = function() {
 function recover_node_id() {
   my_node_id = store.get("my_node_id");
   most_recent_question_number = store.get("most_recent_question_number");
+  most_recent_info_id = store.get("most_recent_info_id");
   get_info();
 }
 
@@ -149,6 +164,7 @@ function submit_response(response) {
     details: JSON.stringify(question_json)
   }).done(function (resp) {
     store.set("most_recent_question_number", most_recent_question_number);
+    store.set("most_recent_info_id", most_recent_info_id);
     if (number >= total_questions) {
       dallinger.goToPage('faces');
     } else {
