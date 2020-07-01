@@ -5,6 +5,7 @@ import gevent
 import traceback
 import math
 import json
+import time
 
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
@@ -190,11 +191,16 @@ class Bartlett1932(Experiment):
                     if all([n == num_faces_sent for n in num_faces_answered]):
                         # you are right that the function will never run unless called. So I'm calling it here.
                         # this says to call the function when everyone has answered the question
-                        if num_faces_sent > 0:
+                        if num_faces_answered > 0:
                             self.get_answer_summary(net)
+                            summary_info = self.models.Summary(origin=face_source, contents=json.dumps("summary"))
+                            face_source.transmit(what=summary_info)
+                            for n in nodes:
+                                n.receive()
 
                         # but it will still tell the source to send the next question, not what we want, but otherwise the function
                         # will loop every 2s and repeatedly get the answer summary
+                        time.sleep(15)
                         face_source.transmit()
                         for n in nodes:
                             n.receive()
