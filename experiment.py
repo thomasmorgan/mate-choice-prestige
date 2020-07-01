@@ -185,6 +185,7 @@ class Bartlett1932(Experiment):
                 for net in [n for n in self.networks() if n.round == 1]:
                     face_source = net.nodes(type=self.models.FaceSource)[0]
                     num_faces_sent = len(face_source.infos(type=self.models.FacePairs))
+                    num_summaries_sent = len(face_source.infos(type=self.models.Summary))
                     nodes = [n for n in net.nodes() if n.type == "node"]
                     num_faces_answered = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
 
