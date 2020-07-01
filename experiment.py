@@ -191,11 +191,11 @@ class Bartlett1932(Experiment):
                     if all([n == num_faces_sent for n in num_faces_answered]):
                         # you are right that the function will never run unless called. So I'm calling it here.
                         # this says to call the function when everyone has answered the question
-                            self.get_answer_summary(net)
-                            summary_info = self.models.Summary(origin=face_source, contents=json.dumps("summary"))
                     num_faces_answered1 = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
                     num_faces_answered2 = [len(n.infos(type=self.models.FaceAnswer2)) for n in nodes]
                         if num_summaries_sent < num_faces_sent:
+                            summary = self.get_answer_summary(net)
+                            summary_info = self.models.Summary(origin=face_source, contents=json.dumps(summary))
                             face_source.transmit(what=summary_info)
                             for n in nodes:
                                 n.receive()
