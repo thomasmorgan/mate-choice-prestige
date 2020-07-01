@@ -183,6 +183,9 @@ class Bartlett1932(Experiment):
             while any([net.round < 2 for net in self.networks()]):
                 gevent.sleep(2)
                 for net in [n for n in self.networks() if n.round == 1]:
+
+                    # calculate how many FairPairs and Summaries have been sent
+                    # and also how many FaceAnswer1s and FaceAnswer2s each node has made
                     face_source = net.nodes(type=self.models.FaceSource)[0]
                     num_faces_sent = len(face_source.infos(type=self.models.FacePairs))
                     num_summaries_sent = len(face_source.infos(type=self.models.Summary))
@@ -190,22 +193,23 @@ class Bartlett1932(Experiment):
                     num_faces_answered1 = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
                     num_faces_answered2 = [len(n.infos(type=self.models.FaceAnswer2)) for n in nodes]
 
-                    # if all participants have answered all face pairs they have been sent, check to see if we need to send a summary
-                    if all([n == num_faces_sent for n in num_faces_answered1]):
+                    # we only need to do anything if all participants in this group have already responded to whatever they have been sent
+                    if all([n == num_faces_sent for n in num_faces_answered1]) and all([n == num_summaries_sent for n in num_faces_answered2]):
 
-                        # if fewer summaries have been sent than face pairs
+                        # if fewer summaries have been sent than face pairs, send a summary
                         if num_summaries_sent < num_faces_sent:
                             summary = self.get_answer_summary(net)
                             summary_info = self.models.Summary(origin=face_source, contents=json.dumps(summary))
                             face_source.transmit(what=summary_info)
                             for n in nodes:
                                 n.receive()
+
+                        # if the same number of summaries and face pairs have been sent, send a face pair
                         elif num_summaries_sent == num_faces_sent:
-                            # if the number of summaries equals the number of faces sent, then maybe we need to send the next question
-                            if all([n == num_summaries_sent for n in num_faces_answered2]):
-                                face_source.transmit()
-                                for n in nodes:
-                                    n.receive()
+                            face_source.transmit()
+                            for n in nodes:
+                                n.receive()
+
                     self.save()
         except Exception:
             self.log(traceback.format_exc())
