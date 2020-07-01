@@ -21,7 +21,7 @@ class FaceAnswer2(Info):
     __mapper_args__ = {"polymorphic_identity": "face_answer_2"}
 
 
-class FacesPairs(Info):
+class FacePairs(Info):
 
     __mapper_args__ = {"polymorphic_identity": "face_pairs"}
 
