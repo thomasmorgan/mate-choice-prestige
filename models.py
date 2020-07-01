@@ -80,7 +80,7 @@ class FaceSource(Source):
         return json.loads(self.property1)
 
     def _contents(self):
-        number_transmissions = len(self.infos())
+        number_transmissions = len(self.infos(type=FacePairs))
         if number_transmissions < len(self.face_pairs):
             question = self.face_pairs[number_transmissions]
         else:
