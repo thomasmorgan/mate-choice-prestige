@@ -175,6 +175,7 @@ class Bartlett1932(Experiment):
                             for n in nodes:
                                 n.receive()
                 self.save()
+            self.log("Beep boop. Quiz monitor shutting down.")
         except Exception:
             self.log(traceback.format_exc())
 
@@ -211,6 +212,7 @@ class Bartlett1932(Experiment):
                                 n.receive()
 
                     self.save()
+                self.log("Beep boop. Face monitor shutting down.")
         except Exception:
             self.log(traceback.format_exc())
 
