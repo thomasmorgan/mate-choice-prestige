@@ -200,13 +200,12 @@ class Bartlett1932(Experiment):
                             face_source.transmit(what=summary_info)
                             for n in nodes:
                                 n.receive()
-
-                        # but it will still tell the source to send the next question, not what we want, but otherwise the function
-                        # will loop every 2s and repeatedly get the answer summary
-                        time.sleep(15)
-                        face_source.transmit()
-                        for n in nodes:
-                            n.receive()
+                        elif num_summaries_sent == num_faces_sent:
+                            # if the number of summaries equals the number of faces sent, then maybe we need to send the next question
+                            if all([n == num_summaries_sent for n in num_faces_answered2]):
+                                face_source.transmit()
+                                for n in nodes:
+                                    n.receive()
                     self.save()
         except Exception:
             self.log(traceback.format_exc())
