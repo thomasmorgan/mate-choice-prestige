@@ -194,11 +194,16 @@ class Bartlett1932(Experiment):
                     num_faces_answered1 = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
                     num_faces_answered2 = [len(n.infos(type=self.models.FaceAnswer2)) for n in nodes]
 
+                    self.log("******")
+                    self.log("faces: {}. {}.".format(num_faces_sent, num_faces_answered1))
+                    self.log("summaries: {}. {}.".format(num_summaries_sent, num_faces_answered2))
+
                     # we only need to do anything if all participants in this group have already responded to whatever they have been sent
                     if all([n == num_faces_sent for n in num_faces_answered1]) and all([n == num_summaries_sent for n in num_faces_answered2]):
 
                         # if fewer summaries have been sent than face pairs, send a summary
                         if num_summaries_sent < num_faces_sent:
+                            self.log("Sending new summary!")
                             summary = self.get_answer_summary(net)
                             summary_info = self.models.Summary(origin=face_source, contents=json.dumps(summary))
                             face_source.transmit(what=summary_info)
@@ -207,13 +212,14 @@ class Bartlett1932(Experiment):
 
                         # if the same number of summaries and face pairs have been sent, send a face pair
                         elif num_summaries_sent == num_faces_sent:
+                            self.log("Sending new face pair!")
                             face_pair = self.models.FacePairs(contents=face_source._contents(), origin=face_source)
                             face_source.transmit(what=face_pair)
                             for n in nodes:
                                 n.receive()
 
-                    self.save()
-                self.log("Beep boop. Face monitor shutting down.")
+                self.save()
+            self.log("Beep boop. Face monitor shutting down.")
         except Exception:
             self.log(traceback.format_exc())
 
