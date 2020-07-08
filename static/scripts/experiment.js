@@ -32,8 +32,23 @@ var get_info = function() {
           face2 = question_json.face2;
           display_faces();
         } else if (newest_info.type == "summary") {
-          // do more stuff
-          // put the various bits of info into the table, etc
+          question_json = JSON.parse(newest_info.contents);
+          face1_string = "";
+          face2_string = "";
+          for (i=0;i<question_json.length;i++) {
+            node_summary = question_json[i];
+            summary_string = "Node " + node_summary.id + " chose this face. Their score is " + node_summary.score + ".<br>";
+            if (node_summary.face == face1) {
+              face1_string += summary_string;
+            } else {
+              face2_string += summary_string;
+            }
+            $("#summary1").html(face1_string);
+            $("#summary2").html(face2_string);
+            $("#question_div").show();
+            $("#face_row").show();
+            $("#summary_row").show();
+          }
         }
       } else {
         setTimeout(function() {
@@ -115,6 +130,7 @@ display_faces = function() {
     countdown = 15;
     $("#countdown").html(countdown);
     $("#question_div").show();
+    $("#face_row").show();
     $("#wait_div").hide();
     // start_answer_timeout();
 };
@@ -165,7 +181,7 @@ function submit_response(response) {
   }).done(function (resp) {
     store.set("most_recent_question_number", most_recent_question_number);
     store.set("most_recent_info_id", most_recent_info_id);
-    if (number >= total_questions) {
+    if (number >= total_questions & round == 0) {
       dallinger.goToPage('faces');
     } else {
       get_info();
