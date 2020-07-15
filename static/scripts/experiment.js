@@ -45,17 +45,22 @@ var get_info = function() {
             } else {
               face2_string += summary_string;
             }
-            if (faces_inverted) {
-              $("#summary2").html(face1_string);
-              $("#summary1").html(face2_string);
-            } else {
-              $("#summary1").html(face1_string);
-              $("#summary2").html(face2_string);
-            }
-            $("#question_div").show();
-            $("#face_row").show();
-            $("#summary_row").show();
           }
+
+          if (faces_inverted) {
+            $("#summary2").html(face1_string);
+            $("#summary1").html(face2_string);
+            $("#face1").click(function() { submit_final_response(face2); });
+            $("#face2").click(function() { submit_final_response(face1); });
+          } else {
+            $("#summary1").html(face1_string);
+            $("#summary2").html(face2_string);
+            $("#face1").click(function() { submit_final_response(face1); });
+            $("#face2").click(function() { submit_final_response(face2); });
+          }
+          $("#question_div").show();
+          $("#face_row").show();
+          $("#summary_row").show();
         }
       } else {
         setTimeout(function() {
