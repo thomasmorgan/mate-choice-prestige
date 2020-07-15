@@ -125,8 +125,6 @@ display_faces = function() {
     $("#question").html(question_text);
     $("#question_number").html("You are on face " + number + " of 30");
 
-    $("#face1").unbind('click');
-    $("#face2").unbind('click');
     if (Math.random() < 0.5) {
       faces_inverted = false;
       $("#face1").attr("src", face1);
@@ -187,6 +185,8 @@ function recover_node_id() {
 function submit_response(response) {
   $("#question_div").hide();
   $("#wait_div").show();
+  $("#face1").unbind('click');
+  $("#face2").unbind('click');
   var types = ["QuizAnswer", "FaceAnswer1"];
   dallinger.createInfo(my_node_id, {
     contents: response,
