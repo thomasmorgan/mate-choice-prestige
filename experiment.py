@@ -138,10 +138,11 @@ class Bartlett1932(Experiment):
                 n.receive()
 
     def info_post_request(self, node, info):
-        if info.details["round"] == 0 and info.contents == info.details["right_answer"]:
-            details = node.details.copy()
-            details["score"] = details["score"] + 1
-            node.details = details
+        if info.type == "quiz_answer":
+            if info.contents == info.details["right_answer"]:
+                details = node.details.copy()
+                details["score"] = details["score"] + 1
+                node.details = details
 
     def recruit(self):
         """Recruit one participant at a time until all networks are full."""
