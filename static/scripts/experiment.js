@@ -22,7 +22,6 @@ var get_info = function() {
           right_answer = question_json.right_answer;
           display_question();  
         } else if (newest_info.type == "face_pairs") {
-          // do stuff here.
           question_json = JSON.parse(newest_info.contents);
           question_text = question_json.question;
           number = question_json.number;
