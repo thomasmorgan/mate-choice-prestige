@@ -37,6 +37,9 @@ var get_info = function() {
           for (i=0;i<question_json.length;i++) {
             node_summary = question_json[i];
             summary_string = "Node " + node_summary.id + " chose this face. Their score is " + node_summary.score + ".<br>";
+            if (node_summary.id == my_node_id) {
+              summary_string = "<br>";
+            }
             if (node_summary.face == face1) {
               face1_string += summary_string;
             } else {
