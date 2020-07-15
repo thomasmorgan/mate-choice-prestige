@@ -34,6 +34,7 @@ var get_info = function() {
           question_json = JSON.parse(newest_info.contents);
           face1_string = "";
           face2_string = "";
+
           for (i=0;i<question_json.length;i++) {
             node_summary = question_json[i];
             summary_string = "Node " + node_summary.id + " chose this face. Their score is " + node_summary.score + ".<br>";
@@ -191,6 +192,29 @@ function submit_response(response) {
   dallinger.createInfo(my_node_id, {
     contents: response,
     info_type: types[round],
+    details: JSON.stringify(question_json)
+  }).done(function (resp) {
+    store.set("most_recent_question_number", most_recent_question_number);
+    store.set("most_recent_info_id", most_recent_info_id);
+    if (number >= total_questions & round == 0) {
+      dallinger.goToPage('faces');
+    } else {
+      get_info();
+    }
+  })
+  .fail(function (rejection) {
+    dallinger.error(rejection);
+  });
+}
+
+function submit_final_response(response) {
+  $("#question_div").hide();
+  $("#wait_div").show();
+  $("#face1").unbind('click');
+  $("#face2").unbind('click');
+  dallinger.createInfo(my_node_id, {
+    contents: response,
+    info_type: "FaceAnswer2",
     details: JSON.stringify(question_json)
   }).done(function (resp) {
     store.set("most_recent_question_number", most_recent_question_number);
