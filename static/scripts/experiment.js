@@ -4,7 +4,7 @@ var most_recent_info_id = 0;
 var total_questions = 5;
 
 // question relevant variables
-var newest_info, question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, received_infos;
+var newest_info, question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, faces_inverted, received_infos;
 
 var get_info = function() {
   dallinger.getReceivedInfos(my_node_id)
@@ -45,8 +45,13 @@ var get_info = function() {
             } else {
               face2_string += summary_string;
             }
-            $("#summary1").html(face1_string);
-            $("#summary2").html(face2_string);
+            if (faces_inverted) {
+              $("#summary2").html(face1_string);
+              $("#summary1").html(face2_string);
+            } else {
+              $("#summary1").html(face1_string);
+              $("#summary2").html(face2_string);
+            }
             $("#question_div").show();
             $("#face_row").show();
             $("#summary_row").show();
@@ -118,11 +123,13 @@ display_faces = function() {
     $("#face1").unbind('click');
     $("#face2").unbind('click');
     if (Math.random() < 0.5) {
+      faces_inverted = false;
       $("#face1").attr("src", face1);
       $("#face2").attr("src", face2);
       $("#face1").click(function() { submit_response(face1); });
       $("#face2").click(function() { submit_response(face2); });
     } else {
+      faces_inverted = true;
       $("#face1").attr("src", face2);
       $("#face2").attr("src", face1);
       $("#face1").click(function() { submit_response(face2); });
