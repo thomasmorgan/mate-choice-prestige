@@ -210,6 +210,7 @@ function submit_response(response) {
 function submit_final_response(response) {
   $("#question_div").hide();
   $("#wait_div").show();
+  $("#summary_row").hide();
   $("#face1").unbind('click');
   $("#face2").unbind('click');
   dallinger.createInfo(my_node_id, {
