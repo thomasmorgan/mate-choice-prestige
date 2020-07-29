@@ -223,7 +223,7 @@ function submit_final_response(response) {
     if (number >= total_questions & round == 0) {
       dallinger.goToPage('faces');
     } 
-    else if (number >= total_questions & round == 1) {
+    else if (number >= face_pairs & round == 1) {
       dallinger.goToPage('survey'):
     } else {
       get_info();
