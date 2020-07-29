@@ -222,6 +222,9 @@ function submit_final_response(response) {
     store.set("most_recent_info_id", most_recent_info_id);
     if (number >= total_questions & round == 0) {
       dallinger.goToPage('faces');
+    } 
+    else if (number >= total_questions & round == 1) {
+      dallinger.goToPage('survey'):
     } else {
       get_info();
     }
