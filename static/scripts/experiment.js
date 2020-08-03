@@ -109,8 +109,6 @@ display_question = function() {
       assign_button("b", wrong_answer);
     }
     
-    countdown = 15;
-    $("#countdown").html(countdown);
     $("#question_div").show();
     $("#wait_div").hide();
     // start_answer_timeout();
@@ -141,8 +139,6 @@ display_faces = function() {
       $("#face2").click(function() { submit_response(face1); });
     }
     
-    countdown = 15;
-    $("#countdown").html(countdown);
     $("#question_div").show();
     $("#face_row").show();
     $("#wait_div").hide();
