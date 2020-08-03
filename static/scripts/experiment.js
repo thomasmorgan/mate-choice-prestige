@@ -2,6 +2,7 @@ var my_node_id;
 var most_recent_question_number = 0;
 var most_recent_info_id = 0;
 var total_questions = 5;
+var total_faces = 5;
 
 // question relevant variables
 var newest_info, question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, faces_inverted, received_infos;
@@ -222,9 +223,8 @@ function submit_final_response(response) {
     store.set("most_recent_info_id", most_recent_info_id);
     if (number >= total_questions & round == 0) {
       dallinger.goToPage('faces');
-    } 
-    else if (number >= face_pairs & round == 1) {
-      dallinger.goToPage('survey'):
+    } else if (number >= total_faces & round == 1) {
+      dallinger.goToPage('survey');
     } else {
       get_info();
     }
