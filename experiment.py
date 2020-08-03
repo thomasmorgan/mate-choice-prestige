@@ -5,7 +5,6 @@ import gevent
 import traceback
 import math
 import json
-import time
 
 from dallinger.experiment import Experiment
 from dallinger.nodes import Source
