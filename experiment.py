@@ -121,7 +121,10 @@ class Bartlett1932(Experiment):
 
     def create_node(self, participant, network):
         node = Node(network=network, participant=participant)
-        node.details = {"score": 0}
+        node.details = {
+            "score": 0,
+            "id_within_group": network.size() - 2
+        }
         return node
 
     def add_node_to_network(self, node, network):
@@ -238,6 +241,7 @@ class Bartlett1932(Experiment):
         for node, answer in zip(nodes, answers):
             summary.append({
                 "id": node.id,
+                "id_within_group": node.details["id_within_group"],
                 "score": node.details["score"],
                 "face": answer
             })

@@ -38,7 +38,7 @@ var get_info = function() {
 
           for (i=0;i<question_json.length;i++) {
             node_summary = question_json[i];
-            summary_string = "Participant " + node_summary.id + " chose this face. Their pretest score is " + node_summary.score + ".<br>";
+            summary_string = "Participant " + node_summary.id_within_group + " chose this face. Their pretest score is " + node_summary.score + ".<br>";
             if (node_summary.id == my_node_id) {
               summary_string = "<br>";
             }
