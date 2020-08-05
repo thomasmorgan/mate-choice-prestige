@@ -40,7 +40,7 @@ var get_info = function() {
             node_summary = question_json[i];
             summary_string = "Participant " + node_summary.id_within_group + " chose this face. Their pretest score is " + node_summary.score + ".<br>";
             if (node_summary.id == my_node_id) {
-              summary_string = "<br>";
+              summary_string = "";
             }
             if (node_summary.face == face1) {
               face1_string += summary_string;
