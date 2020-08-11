@@ -234,7 +234,7 @@ var array = ["18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "
 
 //Create and append select list
 var selectList = document.createElement("select");
-selectList.setAttribute("age", "mySelect");
+selectList.setAttribute("id", "mySelect");
 myDiv.appendChild(selectList);
 
 //Create and append the options
