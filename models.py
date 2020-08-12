@@ -69,7 +69,7 @@ class FaceSource(Source):
                 'face1': faces[i * 2],
                 'face2': faces[i * 2 + 1],
                 'round': 1,
-                'question': 'Which of these faces is best?'
+                'question': 'Which of these individuals would you prefer as a romantic partner?'
             })
             face_pairs.append(pair)
 
@@ -86,7 +86,6 @@ class FaceSource(Source):
         else:
             question = self.face_pairs[-1]
         return question
-
 class Questionnaire(Source):
     """A Source that reads in a question from a file and transmits it."""
 
