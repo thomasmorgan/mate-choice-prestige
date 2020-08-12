@@ -175,7 +175,7 @@ function recover_node_id() {
 
 function submit_response(response) {
   $("#question_div").hide();
-  $("#wait_div").show();
+  $("#wait_div").hide();
   $("#face1").unbind('click');
   $("#face2").unbind('click');
   var types = ["QuizAnswer", "FaceAnswer1"];
