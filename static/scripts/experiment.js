@@ -111,7 +111,8 @@ display_question = function() {
     
     $("#question_div").show();
     $("#wait_div").hide();
-    // start_answer_timeout();
+    $("#pretest_wait_div").hide();
+    
 };
 
 assign_button = function(button, answer) {
