@@ -92,12 +92,10 @@ class MateChoicePrestige(Experiment):
         return node
 
     def add_node_to_network(self, node, network):
-        """Add node to the chain and receive transmissions."""
         network.add_node(node)
 
         if (network.full):
-            source = network.nodes(type=self.models.Questionnaire)[0]
-            source.transmit()
+            network.nodes(type=self.models.Questionnaire)[0].transmit()
 
         for n in network.nodes():
             if not isinstance(n, Source):
