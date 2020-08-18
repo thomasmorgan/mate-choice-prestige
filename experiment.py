@@ -1,5 +1,3 @@
-"""Bartlett's transmission chain experiment from Remembering (1932)."""
-
 import logging
 import gevent
 import traceback
@@ -15,43 +13,31 @@ from operator import attrgetter
 logger = logging.getLogger(__file__)
 
 
-class Bartlett1932(Experiment):
-    """Define the structure of the experiment."""
+class MateChoicePrestige(Experiment):
 
     def __init__(self, session=None):
-        """Call the same function in the super (see experiments.py in dallinger).
-
-        A few properties are then overwritten.
-
-        Finally, setup() is called.
-        """
-        super(Bartlett1932, self).__init__(session)
-        from . import models  # Import at runtime to avoid SQLAlchemy warnings
-
+        super().__init__(session)
+        from . import models
         self.models = models
+
         self.experiment_repeats = 1
         self.ppts_per_network = 2
         self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         self.num_questions_in_round_0 = 5
+
         self.known_classes["QuizAnswer"] = self.models.QuizAnswer
         self.known_classes["FaceAnswer1"] = self.models.FaceAnswer1
         self.known_classes["FaceAnswer2"] = self.models.FaceAnswer2
         self.known_classes["FacePairs"] = self.models.FacePairs
         self.known_classes["Summary"] = self.models.Summary
+
         if session:
             self.setup()
 
     def setup(self):
-        """Setup the networks.
-
-        Setup only does stuff if there are no networks, this is so it only
-        runs once at the start of the experiment. It first calls the same
-        function in the super (see experiments.py in dallinger). Then it adds a
-        source to each network.
-        """
         if not self.networks():
-            super(Bartlett1932, self).setup()
+            super().setup()
             for net in self.networks():
                 if net.id % 2 == 0:
                     net.role = "men"
