@@ -86,6 +86,8 @@ class FaceSource(Source):
         else:
             question = self.face_pairs[-1]
         return question
+
+
 class Questionnaire(Source):
     """A Source that reads in a question from a file and transmits it."""
 
