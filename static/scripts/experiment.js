@@ -60,9 +60,14 @@ var get_info = function() {
             $("#face1").click(function() { submit_final_response(face1); });
             $("#face2").click(function() { submit_final_response(face2); });
           }
+
+          $("#question").html("Please review the decisions of your group mates and make a final decision.");
+
           $("#question_div").show();
           $("#face_row").show();
           $("#summary_row").show();
+          $("#wait_div").hide();
+          $("#pretest_wait_div").hide();
         }
       } else {
         setTimeout(function() {
@@ -109,10 +114,9 @@ display_question = function() {
       assign_button("b", wrong_answer);
     }
     
-    $("#question_div").show();
     $("#wait_div").hide();
     $("#pretest_wait_div").hide();
-    
+    $("#question_div").show();
 };
 
 assign_button = function(button, answer) {
@@ -124,7 +128,7 @@ assign_button = function(button, answer) {
 
 display_faces = function() {
     $("#question").html(question_text);
-    $("#question_number").html("You are on face " + number + " of 30");
+    $("#question_number").html("You are on face pair " + number + " of 30");
 
     if (Math.random() < 0.5) {
       faces_inverted = false;
@@ -143,6 +147,7 @@ display_faces = function() {
     $("#question_div").show();
     $("#face_row").show();
     $("#wait_div").hide();
+    $("#pretest_wait_div").hide();
     // start_answer_timeout();
 };
 
@@ -176,7 +181,7 @@ function recover_node_id() {
 
 function submit_response(response) {
   $("#question_div").hide();
-  $("#wait_div").hide();
+  $("#wait_div").show();
   $("#face1").unbind('click');
   $("#face2").unbind('click');
   var types = ["QuizAnswer", "FaceAnswer1"];
