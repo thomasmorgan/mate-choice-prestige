@@ -57,9 +57,10 @@ class MateChoicePrestige(Experiment):
 
         if preference == "both":
             return self.fullest_available_network()
-        elif preference in ["men", "women"]:
 
+        elif preference in ["men", "women"]:
             available_networks = self.networks(role=preference, full=False)
+
             if available_networks:
                 return min(available_networks, key=attrgetter('id'))
 
@@ -142,9 +143,6 @@ class MateChoicePrestige(Experiment):
             while any([net.round < 2 for net in self.networks()]):
                 gevent.sleep(2)
                 for net in [n for n in self.networks() if n.round == 1]:
-
-                    # calculate how many FairPairs and Summaries have been sent
-                    # and also how many FaceAnswer1s and FaceAnswer2s each node has made
                     face_source = net.nodes(type=self.models.FaceSource)[0]
                     num_faces_sent = len(face_source.infos(type=self.models.FacePairs))
                     num_summaries_sent = len(face_source.infos(type=self.models.Summary))
@@ -152,29 +150,18 @@ class MateChoicePrestige(Experiment):
                     num_faces_answered1 = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
                     num_faces_answered2 = [len(n.infos(type=self.models.FaceAnswer2)) for n in nodes]
 
-                    self.log("******")
-                    self.log("faces: {}. {}.".format(num_faces_sent, num_faces_answered1))
-                    self.log("summaries: {}. {}.".format(num_summaries_sent, num_faces_answered2))
-
-                    # we only need to do anything if all participants in this group have already responded to whatever they have been sent
                     if all([n == num_faces_sent for n in num_faces_answered1]) and all([n == num_summaries_sent for n in num_faces_answered2]):
 
-                        # if fewer summaries have been sent than face pairs, send a summary
                         if num_summaries_sent < num_faces_sent:
-                            self.log("Sending new summary!")
                             summary = self.get_answer_summary(net)
                             summary_info = self.models.Summary(origin=face_source, contents=json.dumps(summary))
                             face_source.transmit(what=summary_info)
-                            for n in nodes:
-                                n.receive()
 
-                        # if the same number of summaries and face pairs have been sent, send a face pair
                         elif num_summaries_sent == num_faces_sent:
-                            self.log("Sending new face pair!")
-                            face_pair = self.models.FacePairs(contents=face_source._contents(), origin=face_source)
-                            face_source.transmit(what=face_pair)
-                            for n in nodes:
-                                n.receive()
+                            face_source.transmit()
+
+                        for n in nodes:
+                            n.receive()
 
                 self.save()
             self.log("Beep boop. Face monitor shutting down.")
@@ -182,29 +169,12 @@ class MateChoicePrestige(Experiment):
             self.log(traceback.format_exc())
 
     def get_answer_summary(self, network):
-        # the goal of this function is to collate the answers of all participants in the network, and create a summary of them
-        summary = []
-
-        # to get the infos you need to do something like this:
-        # first get all the nodes in the network
-        # note the function now need to be passed 'network' as an argument
         nodes = [n for n in network.nodes() if n.type == "node"]
-
-        # the get each nodes most recent answer (i.e. the FaceAnswer1 with the greatest id value)
         answers = [max(n.infos(type=self.models.FaceAnswer1), key=attrgetter("id")).contents for n in nodes]
 
-        for node, answer in zip(nodes, answers):
-            summary.append({
-                "id": node.id,
-                "id_within_group": node.details["id_within_group"],
-                "score": node.details["score"],
-                "face": answer
-            })
-
-        # you can print this above the return statement
-        self.log(summary)
-
-        # and you might want to return it.
-        return summary
-
-        # statements after a return statement will *never* run, return means stop execution of this function and go back to whatever called it.
+        return [{
+            "id": node.id,
+            "id_within_group": node.details["id_within_group"],
+            "score": node.details["score"],
+            "face": answer
+        } for node, answer in zip(nodes, answers)]
