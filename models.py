@@ -41,7 +41,6 @@ class FaceNetwork(FullyConnected):
 
     @round.setter
     def round(self, round):
-        """Assign fitness to property1."""
         self.property1 = repr(round)
 
 
@@ -49,14 +48,14 @@ class FaceSource(Source):
 
     __mapper_args__ = {"polymorphic_identity": "face_source"}
 
-    def create_face_pairs(self):
-        female_faces = glob.glob("./static/images/female_images/*.jpg")
-        male_faces = glob.glob("./static/images/male_images/*.jpg")
+    def glob_images(self, sex):
+        return glob.glob("./static/images/{}_images/*.jpg".format(sex))
 
+    def create_face_pairs(self):
         if self.network.role == "men":
-            faces = male_faces
+            faces = self.glob_images("male")
         elif self.network.role == "women":
-            faces = female_faces
+            faces = self.glob_images("female")
         else:
             raise ValueError("Unknown network role: {}".format(self.network.role))
 
@@ -92,15 +91,10 @@ class FaceSource(Source):
 
 
 class Questionnaire(Source):
-    """A Source that reads in a question from a file and transmits it."""
 
     __mapper_args__ = {"polymorphic_identity": "questionnaire_source"}
 
     def _contents(self):
-        """Define the contents of new Infos.
-
-        transmit() -> _what() -> create_information() -> _contents().
-        """
         questions = [
             json.dumps({
                 'question': 'What are piranhas?',
