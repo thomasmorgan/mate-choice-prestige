@@ -1,73 +1,41 @@
-var my_node_id;
+var my_node_id, received_infos, newest_info, number, round, question_json, question_text, right_answer, wrong_answer, face1, face2, faces_inverted, face1_summary, face2_summary;
+
 var most_recent_question_number = 0;
 var most_recent_info_id = 0;
+
 var total_questions = 5;
 var total_faces = 5;
 
-// question relevant variables
-var newest_info, question_json, round, question_text, wrong_answer, right_answer, number, round, face1, face2, faces_inverted, received_infos;
+function create_agent() {
+  dallinger.createAgent()
+    .done(function (resp) {
+      my_node_id = resp.node.id;
+      store.set("my_node_id", my_node_id);
+      get_info();
+    })
+    .fail(function (rejection) { go_to_questionnaire(); });
+};
 
-var get_info = function() {
+function go_to_questionnaire() {
+  dallinger.allowExit();
+  dallinger.goToPage('questionnaire');
+}
+
+function get_info() {
   dallinger.getReceivedInfos(my_node_id)
     .done(function (resp) {
       received_infos = resp.infos;
-      newest_info = get_max_question(received_infos);
-      if (typeof newest_info != "undefined") {
+      if (received_new_info()) {
+        identify_new_info();
         if (newest_info.type == "info") {
-          question_json = JSON.parse(newest_info.contents);
-          question_text = question_json.question;
-          number = question_json.number;
-          most_recent_question_number = number;
-          round = question_json.round;
-          wrong_answer = question_json.wrong_answer;
-          right_answer = question_json.right_answer;
+          read_question();
           display_question();  
         } else if (newest_info.type == "face_pairs") {
-          question_json = JSON.parse(newest_info.contents);
-          question_text = question_json.question;
-          number = question_json.number;
-          most_recent_question_number = number;
-          round = question_json.round;
-          face1 = question_json.face1;
-          face2 = question_json.face2;
+          read_face_pair();
           display_faces();
         } else if (newest_info.type == "summary") {
-          question_json = JSON.parse(newest_info.contents);
-          face1_string = "";
-          face2_string = "";
-
-          for (i=0;i<question_json.length;i++) {
-            node_summary = question_json[i];
-            summary_string = "Participant " + node_summary.id_within_group + " chose this face. Their pretest score is " + node_summary.score + ".<br>";
-            if (node_summary.id == my_node_id) {
-              summary_string = "";
-            }
-            if (node_summary.face == face1) {
-              face1_string += summary_string;
-            } else {
-              face2_string += summary_string;
-            }
-          }
-
-          if (faces_inverted) {
-            $("#summary2").html(face1_string);
-            $("#summary1").html(face2_string);
-            $("#face1").click(function() { submit_final_response(face2); });
-            $("#face2").click(function() { submit_final_response(face1); });
-          } else {
-            $("#summary1").html(face1_string);
-            $("#summary2").html(face2_string);
-            $("#face1").click(function() { submit_final_response(face1); });
-            $("#face2").click(function() { submit_final_response(face2); });
-          }
-
-          $("#question").html("Please review the decisions of your group mates and make a final decision.");
-
-          $("#question_div").show();
-          $("#face_row").show();
-          $("#summary_row").show();
-          $("#wait_div").hide();
-          $("#pretest_wait_div").hide();
+          create_summary();
+          display_summary();
         }
       } else {
         setTimeout(function() {
@@ -81,28 +49,41 @@ var get_info = function() {
     });
 };
 
-get_max_question = function(infos) {
-  if (infos.length == 0) { return undefined; }
+function received_new_info() {
+  if (received_infos.length == 0) { return false; }
+  else { return(max_received_info_id() > most_recent_info_id); }
+}
 
-  newest_info = infos[0];
-  for (i = 1; i < infos.length; i++) {
-    if (infos[i].id > newest_info.id) {
-      newest_info = infos[i];
+function max_received_info_id() {
+  var max_id = 0;
+  for (i = 0; i < received_infos.length; i++) {
+    if (received_infos[i].id > max_id) {
+      max_id = received_infos[i].id;
     }
   }
+  return max_id;
+}
 
-  // if (JSON.parse(newest_info.contents).number == most_recent_question_number) {
-  if (newest_info.id == most_recent_info_id) {
-    return undefined;
-  } else {
-    //return(JSON.parse(newest_info.contents));
-    most_recent_info_id = newest_info.id;
-    return newest_info;
-  }
-};
+function identify_new_info() {
+  received_infos.forEach(function(this_info) {
+    if (this_info.id == max_received_info_id()) {
+      newest_info = this_info;
+      most_recent_info_id = this_info.id;
+    }
+  });
+}
 
-// display the question
-display_question = function() {
+function read_question() {
+  question_json = JSON.parse(newest_info.contents);
+  question_text = question_json.question;
+  number = question_json.number;
+  most_recent_question_number = number;
+  round = question_json.round;
+  wrong_answer = question_json.wrong_answer;
+  right_answer = question_json.right_answer;
+}
+
+function display_question() {
     $("#question").html(question_text);
     $("#question_number").html("You are on question " + number + " of 30");
 
@@ -119,121 +100,131 @@ display_question = function() {
     $("#question_div").show();
 };
 
-assign_button = function(button, answer) {
-  button_name = "#submit-" + button;
+function assign_button(button, answer) {
+  var button_name = "#submit-" + button;
   $(button_name).html(answer);
   $(button_name).unbind('click');
-  $(button_name).click(function() { submit_response(answer); });
+  $(button_name).click(function() { submit_response(answer, "QuizAnswer"); });
 };
 
-display_faces = function() {
-    $("#question").html(question_text);
-    $("#question_number").html("You are on face pair " + number + " of 30");
+function read_face_pair() {
+  question_json = JSON.parse(newest_info.contents);
+  question_text = question_json.question;
+  number = question_json.number;
+  most_recent_question_number = number;
+  round = question_json.round;
+  face1 = question_json.face1;
+  face2 = question_json.face2;
+}
 
-    if (Math.random() < 0.5) {
-      faces_inverted = false;
-      $("#face1").attr("src", face1);
-      $("#face2").attr("src", face2);
-      $("#face1").click(function() { submit_response(face1); });
-      $("#face2").click(function() { submit_response(face2); });
-    } else {
-      faces_inverted = true;
-      $("#face1").attr("src", face2);
-      $("#face2").attr("src", face1);
-      $("#face1").click(function() { submit_response(face2); });
-      $("#face2").click(function() { submit_response(face1); });
+function display_faces() {
+  $("#question").html(question_text);
+  $("#question_number").html("You are on face pair " + number + " of 30");
+
+  $("#face1").unbind('click');
+  $("#face2").unbind('click');
+
+  if (Math.random() < 0.5) {
+    faces_inverted = false;
+    $("#face1").attr("src", face1);
+    $("#face2").attr("src", face2);
+    $("#face1").click(function() { submit_response(face1, "FaceAnswer1"); });
+    $("#face2").click(function() { submit_response(face2, "FaceAnswer1"); });
+  } else {
+    faces_inverted = true;
+    $("#face1").attr("src", face2);
+    $("#face2").attr("src", face1);
+    $("#face1").click(function() { submit_response(face2, "FaceAnswer1"); });
+    $("#face2").click(function() { submit_response(face1, "FaceAnswer1"); });
+  }
+  
+  $("#wait_div").hide();
+  $("#pretest_wait_div").hide();
+  $("#summary_row").hide();
+  $("#face_row").show();
+  $("#question_div").show();
+};
+
+function create_summary() {
+  question_json = JSON.parse(newest_info.contents);
+  face1_summary = "";
+  face2_summary = "";
+
+  for (i=0;i<question_json.length;i++) {
+    node_summary = question_json[i];
+    if (node_summary.id != my_node_id) {
+      node_summary = question_json[i];
+      summary_string = "Participant " + node_summary.id_within_group + " chose this face. Their pretest score is " + node_summary.score + ".<br>";
+      if (node_summary.face == face1) { face1_summary += summary_string; }
+      else { face2_summary += summary_string; }
     }
-    
-    $("#question_div").show();
-    $("#face_row").show();
-    $("#wait_div").hide();
-    $("#pretest_wait_div").hide();
-    // start_answer_timeout();
-};
+  }
+}
 
-// Create the agent.
-var create_agent = function() {
-  $('#finish-reading').prop('disabled', true);
-  dallinger.createAgent()
-    .done(function (resp) {
-      $('#finish-reading').prop('disabled', false);
-      my_node_id = resp.node.id;
-      store.set("my_node_id", my_node_id);
-      get_info();
-    })
-    .fail(function (rejection) {
-      // A 403 is our signal that it's time to go to the questionnaire
-      if (rejection.status === 403) {
-        dallinger.allowExit();
-        dallinger.goToPage('questionnaire');
-      } else {
-        dallinger.error(rejection);
-      }
-    });
-};
+function display_summary() {
+  $("#face1").unbind('click');
+  $("#face2").unbind('click');
 
-function recover_node_id() {
+  if (faces_inverted) {
+    $("#summary2").html(face1_summary);
+    $("#summary1").html(face2_summary);
+    $("#face1").click(function() { submit_response(face2, "FaceAnswer2"); });
+    $("#face2").click(function() { submit_response(face1, "FaceAnswer2"); });
+  } else {
+    $("#summary1").html(face1_summary);
+    $("#summary2").html(face2_summary);
+    $("#face1").click(function() { submit_response(face1, "FaceAnswer2"); });
+    $("#face2").click(function() { submit_response(face2, "FaceAnswer2"); });
+  }
+
+  $("#question").html("Please review the decisions of your group mates and make a final decision.");
+
+  $("#question_div").show();
+  $("#face_row").show();
+  $("#summary_row").show();
+  $("#wait_div").hide();
+  $("#pretest_wait_div").hide();
+}
+
+function recover_stored_variables() {
   my_node_id = store.get("my_node_id");
   most_recent_question_number = store.get("most_recent_question_number");
   most_recent_info_id = store.get("most_recent_info_id");
   get_info();
 }
 
-function submit_response(response) {
+function submit_response(response, type) {
   $("#question_div").hide();
   $("#wait_div").show();
-  $("#face1").unbind('click');
-  $("#face2").unbind('click');
-  var types = ["QuizAnswer", "FaceAnswer1"];
   dallinger.createInfo(my_node_id, {
     contents: response,
-    info_type: types[round],
+    info_type: type,
     details: JSON.stringify(question_json)
-  }).done(function (resp) {
+  }).done(function(resp) {
     store.set("most_recent_question_number", most_recent_question_number);
     store.set("most_recent_info_id", most_recent_info_id);
-    if (number >= total_questions & round == 0) {
-      dallinger.goToPage('faces');
-    } else {
-      get_info();
-    }
-  })
-  .fail(function (rejection) {
-    dallinger.error(rejection);
+    advance_to_next_question(type);
+  }).fail(function (rejection) {
+    go_to_questionnaire();
   });
 }
 
-function submit_final_response(response) {
-  $("#question_div").hide();
-  $("#wait_div").show();
-  $("#summary_row").hide();
-  $("#face1").unbind('click');
-  $("#face2").unbind('click');
-  dallinger.createInfo(my_node_id, {
-    contents: response,
-    info_type: "FaceAnswer2",
-    details: JSON.stringify(question_json)
-  }).done(function (resp) {
-    store.set("most_recent_question_number", most_recent_question_number);
-    store.set("most_recent_info_id", most_recent_info_id);
-    if (number >= total_questions & round == 0) {
-      dallinger.goToPage('faces');
-    } else if (number >= total_faces & round == 1) {
-      dallinger.goToPage('survey');
-    } else {
-      get_info();
-    }
-  })
-  .fail(function (rejection) {
-    dallinger.error(rejection);
-  });
+function advance_to_next_question(type) {
+  if (type == "QuizAnswer") {
+    if (number >= total_questions) { dallinger.goToPage('faces'); }
+    else { get_info(); }
+  } else if (type == "FaceAnswer1") {
+    get_info();
+  } else {
+    if (number >= total_faces) { dallinger.goToPage('survey'); }
+    else { get_info(); }
+  }
 }
 
-window.onload = function() {
+$(document).ready(function() {
   if ($('#age').length) {
     for (i=18; i<101; i++) {
       $("#age").append('<option value="' + i + '">' + i + '</option>');
     }
   }
-};
-
+});
