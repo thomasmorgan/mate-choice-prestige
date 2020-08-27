@@ -43,10 +43,7 @@ function get_info() {
         }, 1000);
       }
     })
-    .fail(function (rejection) {
-      console.log(rejection);
-      $('body').html(rejection.html);
-    });
+    .fail(function (rejection) { go_to_questionnaire(); });
 };
 
 function received_new_info() {
