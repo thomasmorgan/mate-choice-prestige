@@ -2,11 +2,8 @@ import logging
 import gevent
 import traceback
 import math
-import json
 
 from dallinger.experiment import Experiment
-from dallinger.nodes import Source
-from dallinger.models import Node
 
 from operator import attrgetter
 
@@ -25,6 +22,8 @@ class MateChoicePrestige(Experiment):
         self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         self.num_questions_in_round_0 = 5
+        self.num_questions_in_round_1 = 5
+        self.inactivity_time_limit = 20
 
         self.known_classes["QuizAnswer"] = self.models.QuizAnswer
         self.known_classes["FaceAnswer1"] = self.models.FaceAnswer1
@@ -85,96 +84,108 @@ class MateChoicePrestige(Experiment):
         return min([n for n in available_networks if n.size() == max_size], key=attrgetter('id'))
 
     def create_node(self, participant, network):
-        node = Node(network=network, participant=participant)
-        node.details = {
-            "score": 0,
-            "id_within_group": network.size() - 2
-        }
+        node = self.models.Player(network=network, participant=participant)
         return node
 
     def add_node_to_network(self, node, network):
         network.add_node(node)
-
         if (network.full):
-            network.nodes(type=self.models.Questionnaire)[0].transmit()
-
-        for n in network.nodes():
-            if not isinstance(n, Source):
+            network.quiz_source.transmit()
+            for n in network.players:
                 n.receive()
 
     def info_post_request(self, node, info):
+        node.update_last_request_time()
         if info.type == "quiz_answer":
             if info.contents == info.details["right_answer"]:
                 details = node.details.copy()
                 details["score"] = details["score"] + 1
                 node.details = details
 
+    def info_get_request(self, node, infos):
+        node.update_last_request_time()
+
     @property
     def background_tasks(self):
         return [
             self.quiz_monitor,
-            self.face_monitor
+            self.face_monitor,
+            self.activity_monitor
         ]
 
     def quiz_monitor(self):
         try:
-            while any([net.round == 0 for net in self.networks()]):
+            while self.quiz_ongoing():
                 gevent.sleep(2)
-                for net in [n for n in self.networks() if n.round == 0]:
-                    question_source = net.nodes(type=self.models.Questionnaire)[0]
-                    num_questions_sent = len(question_source.infos())
-                    nodes = [n for n in net.nodes() if n.type == "node"]
-                    num_questions_answered = [len(n.infos(type=self.models.QuizAnswer)) for n in nodes]
-
-                    if num_questions_sent > 0 and all([n == num_questions_sent for n in num_questions_answered]):
-                        if num_questions_sent == self.num_questions_in_round_0:
-                            net.round = 1
-                        else:
-                            question_source.transmit()
-                            for n in nodes:
-                                n.receive()
+                self.advance_quiz()
                 self.save()
             self.log("Beep boop. Quiz monitor shutting down.")
         except Exception:
             self.log(traceback.format_exc())
 
+    def advance_quiz(self):
+        for net in self.networks_in_quiz():
+            if self.quiz_completed(net):
+                net.round = 1
+            elif net.ready_for_next_quiz_question():
+                net.send_next_quiz_question()
+
+    def quiz_ongoing(self):
+        return any([net.round == 0 for net in self.networks()])
+
+    def networks_in_quiz(self):
+        return [n for n in self.networks() if n.round == 0]
+
+    def quiz_completed(self, net):
+        all_quiz_questions_sent = len(net.quiz_source.infos()) == self.num_questions_in_round_0
+        return all_quiz_questions_sent and net.all_sent_quiz_questions_answered()
+
     def face_monitor(self):
         try:
-            while any([net.round < 2 for net in self.networks()]):
+            while self.experiment_ongoing():
                 gevent.sleep(2)
-                for net in [n for n in self.networks() if n.round == 1]:
-                    face_source = net.nodes(type=self.models.FaceSource)[0]
-                    num_faces_sent = len(face_source.infos(type=self.models.FacePairs))
-                    num_summaries_sent = len(face_source.infos(type=self.models.Summary))
-                    nodes = [n for n in net.nodes() if n.type == "node"]
-                    num_faces_answered1 = [len(n.infos(type=self.models.FaceAnswer1)) for n in nodes]
-                    num_faces_answered2 = [len(n.infos(type=self.models.FaceAnswer2)) for n in nodes]
-
-                    if all([n == num_faces_sent for n in num_faces_answered1]) and all([n == num_summaries_sent for n in num_faces_answered2]):
-
-                        if num_summaries_sent < num_faces_sent:
-                            summary = self.get_answer_summary(net)
-                            summary_info = self.models.Summary(origin=face_source, contents=json.dumps(summary))
-                            face_source.transmit(what=summary_info)
-
-                        elif num_summaries_sent == num_faces_sent:
-                            face_source.transmit()
-
-                        for n in nodes:
-                            n.receive()
-
+                self.advance_faces()
                 self.save()
             self.log("Beep boop. Face monitor shutting down.")
         except Exception:
             self.log(traceback.format_exc())
 
-    def get_answer_summary(self, network):
-        nodes = [n for n in network.nodes() if n.type == "node"]
-        answers = [max(n.infos(type=self.models.FaceAnswer1), key=attrgetter("id")).contents for n in nodes]
+    def experiment_ongoing(self):
+        return any([net.round < 2 for net in self.networks()])
 
-        return [{
-            "id": node.id,
-            "id_within_group": node.details["id_within_group"],
-            "score": node.details["score"],
-            "face": answer
-        } for node, answer in zip(nodes, answers)]
+    def advance_faces(self):
+        for net in self.networks_in_faces():
+            if self.faces_completed(net):
+                net.round = 2
+            elif net.all_faces_and_summaries_answered():
+                net.send_next_face_pair_or_summary()
+                for n in net.players:
+                    n.receive()
+
+    def networks_in_faces(self):
+        return [n for n in self.networks() if n.round == 1]
+
+    def faces_completed(self, net):
+        all_face_pairs_sent = len(net.face_source.infos(type=self.models.FacePairs)) == self.num_questions_in_round_1
+        all_summaries_sent = len(net.face_source.infos(type=self.models.Summary)) == self.num_questions_in_round_1
+        return all_face_pairs_sent and all_summaries_sent and net.all_faces_and_summaries_answered()
+
+    def activity_monitor(self):
+        try:
+            while self.experiment_ongoing():
+                gevent.sleep(2)
+                self.find_and_remove_frozen_players()
+                self.save()
+            self.log("Beep boop. Activity monitor shutting down.")
+        except Exception:
+            self.log(traceback.format_exc())
+
+    def find_and_remove_frozen_players(self):
+        for net in self.started_yet_unfinished_networks():
+            most_recent_activity = max([p.last_request for p in net.players])
+            for p in net.players:
+                if (most_recent_activity - p.last_request).total_seconds() > self.inactivity_time_limit:
+                    p.fail()
+
+    def started_yet_unfinished_networks(self):
+        return [n for n in self.networks() if n.players and n.round < 2]
