@@ -105,6 +105,9 @@ class MateChoicePrestige(Experiment):
     def info_get_request(self, node, infos):
         node.update_last_request_time()
 
+    def node_get_request(self, node, nodes):
+        node.update_last_request_time()
+
     @property
     def background_tasks(self):
         return [
