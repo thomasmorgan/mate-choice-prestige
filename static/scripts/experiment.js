@@ -6,16 +6,6 @@ var most_recent_info_id = 0;
 var total_questions = 5;
 var total_faces = 5;
 
-function create_agent() {
-  dallinger.createAgent()
-    .done(function (resp) {
-      my_node_id = resp.node.id;
-      store.set("my_node_id", my_node_id);
-      get_info();
-    })
-    .fail(function (rejection) { go_to_questionnaire(); });
-};
-
 function go_to_questionnaire() {
   dallinger.allowExit();
   dallinger.goToPage('questionnaire');
@@ -183,11 +173,14 @@ function display_summary() {
   $("#pretest_wait_div").hide();
 }
 
-function recover_stored_variables() {
+function recover_node_id() {
   my_node_id = store.get("my_node_id");
+}
+
+function recover_stored_variables() {
+  recover_node_id();
   most_recent_question_number = store.get("most_recent_question_number");
   most_recent_info_id = store.get("most_recent_info_id");
-  get_info();
 }
 
 function submit_response(response, type) {
