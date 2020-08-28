@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="main_div">
+        <h2 id="Welcome to the study"></h2>
+        <br>
+        <h4>Waiting for other players to join the group, thank you for your patience.</h4>
+        <br>
+        <h4>Current group size: <span id="current-group-size"></span>/<span id="max-group-size"></span>.</h4>
+        <hr>
+        <p>Once the group is full the experiment will start automatically and an alert will play to let you know. When you hear the alert you switch to this window immediately, as once the experiment starts inactive players will be removed within 30 seconds to avoid holding the group up.</p>
+        <p>You can use the buttons below to hear what the alert sounds like or to disable the alert. You can also enable a mini-alert for every time a new group member arrives.</p>
+        <br>
+        <button id="play-alert" type="button" class="btn btn-primary">Play alert</button>
+        <button id="toggle-alert" type="button" class="btn btn-primary">Disable alert</button>
+        <p> Alert is currently <span id="alert-enabled">enabled</span></p>
+        <br>
+        <button id="play-mini-alert" type="button" class="btn btn-primary">Play mini-alert</button>
+        <button id="toggle-mini-alert" type="button" class="btn btn-primary">Enable mini-alert</button>
+        <p> Mini-alert is currently <span id="mini-alert-enabled">disabled</span></p>
+    </div>
+    <audio class="audios" id="dong" controls preload="none" style="display: none"> 
+   		<source src="static/sounds/dong.mp3" type="audio/mpeg">
+	</audio>
+	<audio class="audios" id="alert" controls preload="none" style="display: none"> 
+   		<source src="static/sounds/alert_long.wav" type="audio/mpeg">
+	</audio>
+{% endblock %}
+
+{% block libs %}
+    {{ super() }}
+    <script src="/static/scripts/lobby.js" type="text/javascript"> </script>
+{% endblock %}
