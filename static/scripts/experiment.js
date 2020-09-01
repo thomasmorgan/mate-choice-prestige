@@ -8,7 +8,7 @@ var total_faces = 5;
 
 function go_to_questionnaire() {
   dallinger.allowExit();
-  dallinger.goToPage('questionnaire');
+  dallinger.goToPage('survey');
 }
 
 function get_info() {
