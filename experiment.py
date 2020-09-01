@@ -109,6 +109,21 @@ class MateChoicePrestige(Experiment):
     def node_get_request(self, node, nodes):
         node.update_last_request_time()
 
+    def data_check(self, participant):
+        if len(participant.nodes()) != 1:
+            return False
+
+        node = participant.nodes()[0]
+        if len(node.infos(type=self.models.QuizAnswer)) != self.num_questions_in_round_0:
+            return False
+
+        if len(node.infos(type=self.models.FaceAnswer1)) != self.num_questions_in_round_1:
+            return False
+
+        if len(node.infos(type=self.models.FaceAnswer2)) != self.num_questions_in_round_1:
+            return False
+
+        return True
 
     def bonus(self, participant):
         node = participant.nodes()[0]
