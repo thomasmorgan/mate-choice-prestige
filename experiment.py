@@ -24,6 +24,7 @@ class MateChoicePrestige(Experiment):
         self.num_questions_in_round_0 = 5
         self.num_questions_in_round_1 = 5
         self.inactivity_time_limit = 20
+        self.bonus_payment = 3.0
 
         self.known_classes["QuizAnswer"] = self.models.QuizAnswer
         self.known_classes["FaceAnswer1"] = self.models.FaceAnswer1
@@ -107,6 +108,24 @@ class MateChoicePrestige(Experiment):
 
     def node_get_request(self, node, nodes):
         node.update_last_request_time()
+
+
+    def bonus(self, participant):
+        node = participant.nodes()[0]
+        score = node.details["score"]
+        proportional_score = float(score) / float(self.num_questions_in_round_0)
+        bonus_proportion = (proportional_score - 0.5) * 2
+        bounded_bonus_porportion = self.bound(bonus_proportion, 0, 1)
+        bonus = round(bounded_bonus_porportion * self.bonus_payment, 2)
+        return bonus
+
+    def bound(self, value, lower, upper):
+        if value < lower:
+            return lower
+        elif value > upper:
+            return upper
+        else:
+            return value
 
     @property
     def background_tasks(self):
