@@ -5,6 +5,11 @@ $(document).ready(function() {
     setTimeout(function() { initialize_alerts(); }, 3000);
 });
 
+function go_to_questionnaire() {
+  dallinger.allowExit();
+  dallinger.goToPage('survey');
+}
+
 function get_node_id_or_create_agent() {
     my_node_id = dallinger.storage.get("my_node_id");
     if (typeof my_node_id === "undefined") {
@@ -57,10 +62,7 @@ function create_agent() {
       dallinger.storage.set("my_network_id", my_network_id);
       check_to_advance_to_experiment();
     })
-    .fail(function (rejection) {
-        dallinger.allowExit();
-        dallinger.goToPage('questionnaire');
-    });
+    .fail(function (rejection) { go_to_questionnaire(); });
 };
 
 function check_to_advance_to_experiment() {
@@ -73,10 +75,7 @@ function check_to_advance_to_experiment() {
             update_ui_and_try_again();
         }
     })
-    .fail(function (rejection) {
-        dallinger.allowExit();
-        dallinger.goToPage('questionnaire');
-    });
+    .fail(function (rejection) { go_to_questionnaire(); });
 };
 
 function update_ui_and_try_again() {
@@ -90,10 +89,7 @@ function update_max_group_size() {
     .done(function(resp) {
         $('#max-group-size').text(resp.network.max_size - 2);
     })
-    .fail(function (rejection) {
-        dallinger.allowExit();
-        dallinger.goToPage('questionnaire');
-    });
+    .fail(function (rejection) { go_to_questionnaire(); });
 };
 
 update_current_group_size = function() {
@@ -108,8 +104,5 @@ update_current_group_size = function() {
         num_neighbors = new_num_neighbors
         $('#current-group-size').text(num_neighbors + 1);
     })
-    .fail(function (rejection) {
-        dallinger.allowExit();
-        dallinger.goToPage('questionnaire');
-    });
+    .fail(function (rejection) { go_to_questionnaire(); });
 };
