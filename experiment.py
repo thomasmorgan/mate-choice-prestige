@@ -21,8 +21,8 @@ class MateChoicePrestige(Experiment):
         self.ppts_per_network = 2
         self.over_recruitment_factor = 0
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
-        self.num_questions_in_round_0 = 30
-        self.num_questions_in_round_1 = 30
+        self.num_questions_in_round_0 = 5
+        self.num_questions_in_round_1 = 5
         self.inactivity_time_limit = 20
         self.bonus_payment = 3.0
 
