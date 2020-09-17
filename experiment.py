@@ -35,6 +35,10 @@ class MateChoicePrestige(Experiment):
         if session:
             self.setup()
 
+        self.public_properties = {
+            'ppts_per_network': self.ppts_per_network
+        }
+
     def setup(self):
         if not self.networks():
             super().setup()
