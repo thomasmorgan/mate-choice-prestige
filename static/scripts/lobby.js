@@ -66,9 +66,9 @@ function create_agent() {
 };
 
 function check_to_advance_to_experiment() {
-    dallinger.get("/network/" + my_network_id)
+    dallinger.getReceivedInfos(my_node_id)
     .done(function(resp) {
-        if (resp.network.full == true) {
+        if (resp.infos.length > 0) {
             dallinger.allowExit();
             dallinger.goToPage("experiment");
         } else {
