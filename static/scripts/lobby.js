@@ -85,9 +85,9 @@ function update_ui_and_try_again() {
 };
 
 function update_max_group_size() {
-    dallinger.get("/network/" + my_network_id)
-    .done(function(resp) {
-        $('#max-group-size').text(resp.network.max_size - 2);
+    dallinger.getExperimentProperty('ppts_per_network')
+    .done(function (resp) {
+        $('#max-group-size').text(resp.ppts_per_network);
     })
     .fail(function (rejection) { go_to_questionnaire(); });
 };
