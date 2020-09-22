@@ -3,8 +3,8 @@ var my_node_id, received_infos, newest_info, number, round, question_json, quest
 var most_recent_question_number = 0;
 var most_recent_info_id = 0;
 
-var total_questions = 5;
-var total_faces = 5;
+var total_questions = 30;
+var total_faces = 30;
 
 function go_to_questionnaire() {
   dallinger.allowExit();
