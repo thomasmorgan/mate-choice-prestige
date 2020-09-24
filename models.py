@@ -396,13 +396,6 @@ class Questionnaire(Source):
                 'right_answer': 'Photosynthesis',
             }),
             json.dumps({
-                'question': 'What do plants need light for?',
-                'number': 27,
-                'round': 0,
-                'wrong_answer': 'Respiration',
-                'right_answer': 'Photosynthesis',
-            }),
-            json.dumps({
                 'question': 'Which word means "severe and intense"?',
                 'number': 28,
                 'round': 0,
