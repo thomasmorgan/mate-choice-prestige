@@ -93,9 +93,6 @@ class FaceNetwork(FullyConnected):
     def players(self):
         return self.nodes(type=Player)
 
-    def started_quiz(self):
-        return len(self.quiz_source.infos()) > 0
-
     def all_sent_quiz_questions_answered(self):
         num_questions_sent = len(self.quiz_source.infos())
         nodes = self.players
@@ -104,7 +101,7 @@ class FaceNetwork(FullyConnected):
         return all([n_answered == num_questions_sent for n_answered in num_questions_answered])
 
     def ready_for_next_quiz_question(self):
-        return self.started_quiz() and self.all_sent_quiz_questions_answered()
+        return self.full and self.all_sent_quiz_questions_answered()
 
     def send_next_quiz_question(self):
         self.quiz_source.transmit()

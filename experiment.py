@@ -92,13 +92,6 @@ class MateChoicePrestige(Experiment):
         node = self.models.Player(network=network, participant=participant)
         return node
 
-    def add_node_to_network(self, node, network):
-        network.add_node(node)
-        if (network.full):
-            network.quiz_source.transmit()
-            for n in network.players:
-                n.receive()
-
     def info_post_request(self, node, info):
         node.update_last_request_time()
         if info.type == "quiz_answer":
