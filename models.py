@@ -16,9 +16,15 @@ class Player(Node):
 
     def __init__(self, network, participant=None):
         super().__init__(network, participant)
+        other_ids = [n.details["id_within_group"] for n in network.nodes(type=Player) if n.id != self.id]
+        if other_ids:
+            my_id = [(r + 1) for r in range(network.max_size) if (r + 1) not in other_ids][0]
+        else:
+            my_id = 1
+
         self.details = {
             "score": 0,
-            "id_within_group": network.size() - 2,
+            "id_within_group": my_id,
             "last_request": str(datetime.now())
         }
 
