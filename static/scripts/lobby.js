@@ -56,14 +56,15 @@ function initialize_alerts() {
 function create_agent() {
   dallinger.createAgent()
     .done(function (resp) {
-      my_node_id = resp.node.id;
-      store.set("my_node_id", my_node_id);
-      my_network_id = resp.node.network_id;
-      dallinger.storage.set("my_network_id", my_network_id);
-      check_to_advance_to_experiment();
+        my_node = resp.node;
+        my_node_id = resp.node.id;
+        store.set("my_node_id", my_node_id);
+        my_network_id = resp.node.network_id;
+        dallinger.storage.set("my_network_id", my_network_id);
+        check_to_advance_to_experiment();
     })
     .fail(function (rejection) { go_to_questionnaire(); });
-};
+}
 
 function check_to_advance_to_experiment() {
     dallinger.getReceivedInfos(my_node_id)
@@ -76,13 +77,13 @@ function check_to_advance_to_experiment() {
         }
     })
     .fail(function (rejection) { go_to_questionnaire(); });
-};
+}
 
 function update_ui_and_try_again() {
     update_max_group_size();
     update_current_group_size();
     setTimeout(function() { check_to_advance_to_experiment(); }, 1500);
-};
+}
 
 function update_max_group_size() {
     dallinger.getExperimentProperty('ppts_per_network')
@@ -90,7 +91,7 @@ function update_max_group_size() {
         $('#max-group-size').text(resp.ppts_per_network);
     })
     .fail(function (rejection) { go_to_questionnaire(); });
-};
+}
 
 update_current_group_size = function() {
     dallinger.get(
