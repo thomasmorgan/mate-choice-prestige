@@ -99,6 +99,19 @@ class FaceNetwork(FullyConnected):
     def players(self):
         return self.nodes(type=Player)
 
+    def taking_too_long_to_fill(self, limit):
+        players = self.nodes(type=Player)
+        if not players:
+            return False
+        else:
+            earliest_node = min(players, key=attrgetter('creation_time'))
+            network_age = (datetime.now() - earliest_node.creation_time).total_seconds()
+            return network_age > limit
+
+    def shrink_to_current_size(self):
+        self.max_size = self.size()
+        self.calculate_full()
+
     def all_sent_quiz_questions_answered(self):
         num_questions_sent = len(self.quiz_source.infos())
         nodes = self.players

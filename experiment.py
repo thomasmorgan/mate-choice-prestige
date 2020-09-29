@@ -24,6 +24,7 @@ class MateChoicePrestige(Experiment):
         self.num_questions_in_round_0 = 30
         self.num_questions_in_round_1 = 30
         self.inactivity_time_limit = 20
+        self.network_fill_time = 15 * 60
         self.bonus_payment = 3.0
 
         self.known_classes["QuizAnswer"] = self.models.QuizAnswer
@@ -163,6 +164,8 @@ class MateChoicePrestige(Experiment):
                 net.round = 1
             elif net.ready_for_next_quiz_question():
                 net.send_next_quiz_question()
+            elif net.taking_too_long_to_fill(self.network_fill_time):
+                net.shrink_to_current_size()
 
     def quiz_ongoing(self):
         return any([net.round == 0 for net in self.networks()])
