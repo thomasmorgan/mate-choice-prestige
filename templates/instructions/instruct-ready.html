@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="advance()">
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="advance()" disabled>
                     Begin</button>
                 </div>
             </div>
@@ -52,7 +52,6 @@
             }
         }
 
-        $("#begin-button").prop('disabled', true);
         $("#radio-div").hide();
         dallinger.createParticipant().done(function (resp) {
             $("#begin-button").prop('disabled', true);
