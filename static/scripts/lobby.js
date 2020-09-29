@@ -98,12 +98,32 @@ update_current_group_size = function() {
         "/node/" + my_node_id + "/neighbors",
         { connection: "to" }
     ).done(function (resp) {
-        new_num_neighbors = resp.nodes.length;
+        neighbors = resp.nodes;
+
+        new_num_neighbors = neighbors.length;
         if (new_num_neighbors !== num_neighbors & num_neighbors !== -1 & dallinger.storage.get("mini_alert")) {
             $('#dong').trigger('play');
         }
-        num_neighbors = new_num_neighbors
+        num_neighbors = new_num_neighbors;
         $('#current-group-size').text(num_neighbors + 1);
+
+        all_nodes = [].concat(neighbors);
+        all_nodes.push(my_node);
+        oldest_node = all_nodes[0];
+        if (all_nodes.length > 1) {
+            for (i = 1; i < all_nodes.length; i++) {
+                if (all_nodes[i].id < oldest_node.id) {
+                    oldest_node = all_nodes[i];
+                }
+            }
+        }
+
+        start_time = oldest_node.creation_time;
+        now = new Date();
+        milliseconds = ((new Date(now)) - (new Date(start_time)));
+        minutes = milliseconds / (60000);
+        minutes_left = Math.round(15 - minutes);
+        $('#minutes-left').text(minutes_left);
     })
     .fail(function (rejection) { go_to_questionnaire(); });
 };
