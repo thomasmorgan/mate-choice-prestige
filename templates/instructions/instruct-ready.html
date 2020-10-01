@@ -51,18 +51,26 @@
             }
         });
 
-        dallinger.createParticipant().done(function (resp) {
-            $("#begin-button").prop('disabled', true);
-
-            $('input[type=radio][name=preference]').change(function() {
-                if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
-                    $("#begin-button").prop('disabled', false);
-                } else {
-                    $("#begin-button").prop('disabled', true);
-                }
-            });
-
-            $("#radio-div").show();
+        $('input[type=radio][name=preference]').change(function() {
+            if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
+                $("#begin-button").prop('disabled', false);
+            } else {
+                $("#begin-button").prop('disabled', true);
+            }
         });
+
+        url = "/participant/" + dallinger.identity.workerId + "/" + dallinger.identity.hitId +
+            "/" + dallinger.identity.assignmentId + "/" + dallinger.identity.mode + "?fingerprint_hash=" +
+            (dallinger.identity.fingerprintHash) + '&recruiter=' + dallinger.identity.recruiter;
+        
+        dallinger.post(url)
+            .done(function (resp) {
+                dallinger.identity.participantId = resp.participant.id;
+                $("#radio-div").show();
+            })
+            .fail(function (resp) {
+                dallinger.allowExit();
+                dallinger.goToPage('survey');
+            });
     </script>
 {% endblock %}
