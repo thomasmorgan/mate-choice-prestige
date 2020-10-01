@@ -31,8 +31,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="advance()" disabled>
-                    Begin</button>
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" disabled>Begin</button>
                 </div>
             </div>
         </div>
@@ -41,7 +40,7 @@
 
 {% block scripts %}
     <script>
-        function advance() {
+        $("#begin-button").click(function () {
             dallinger.post('/question/' + dallinger.identity.participantId, {
                 question: "preference",
                 number: 0,
@@ -50,7 +49,7 @@
                 dallinger.allowExit();
                 dallinger.goToPage('lobby');
             }
-        }
+        });
 
         dallinger.createParticipant().done(function (resp) {
             $("#begin-button").prop('disabled', true);
