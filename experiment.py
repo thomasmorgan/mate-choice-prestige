@@ -17,13 +17,13 @@ class MateChoicePrestige(Experiment):
         from . import models
         self.models = models
 
-        self.experiment_repeats = 2
+        self.experiment_repeats = 4
         self.ppts_per_network = 10
-        self.over_recruitment_factor = 0.5
+        self.over_recruitment_factor = 0.25
         self.initial_recruitment_size = math.ceil(self.experiment_repeats * self.ppts_per_network * (1 + self.over_recruitment_factor))
         self.num_questions_in_round_0 = 30
         self.num_questions_in_round_1 = 30
-        self.inactivity_time_limit = 20
+        self.inactivity_time_limit = 30
         self.network_fill_time = 15 * 60
         self.bonus_payment = 3.0
 
