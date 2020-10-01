@@ -15,7 +15,7 @@
 
         <p>Before the experiment begins, please tell us whether you are primarily interested in men or women as romantic partners:</p>
 
-        <div id="radio-div" class="col-md-4">
+        <div id="radio-div" class="col-md-4" class="hidden">
             <form>
                 <input type="radio" name="preference" value="none" checked class="hidden"><br>
                 <input type="radio" name="preference" value="men"> Men<br>
@@ -52,7 +52,6 @@
             }
         }
 
-        $("#radio-div").hide();
         dallinger.createParticipant().done(function (resp) {
             $("#begin-button").prop('disabled', true);
 
