@@ -15,7 +15,7 @@
 
         <p>Before the experiment begins, please tell us whether you are primarily interested in men or women as romantic partners:</p>
 
-        <div id="radio-div" class="col-md-4">
+        <div id="radio-div" class="col-md-4" class="hidden">
             <form>
                 <input type="radio" name="preference" value="none" checked class="hidden"><br>
                 <input type="radio" name="preference" value="men"> Men<br>
@@ -31,8 +31,7 @@
             <div class="row">
                 <div class="col-xs-10"></div>
                 <div class="col-xs-2">
-                    <button id="begin-button" type="button" class="btn btn-success btn-lg" onClick="advance()" disabled>
-                    Begin</button>
+                    <button id="begin-button" type="button" class="btn btn-success btn-lg" disabled>Begin</button>
                 </div>
             </div>
         </div>
@@ -41,7 +40,7 @@
 
 {% block scripts %}
     <script>
-        function advance() {
+        $("#begin-button").click(function () {
             dallinger.post('/question/' + dallinger.identity.participantId, {
                 question: "preference",
                 number: 0,
@@ -50,21 +49,28 @@
                 dallinger.allowExit();
                 dallinger.goToPage('lobby');
             }
-        }
-
-        $("#radio-div").hide();
-        dallinger.createParticipant().done(function (resp) {
-            $("#begin-button").prop('disabled', true);
-
-            $('input[type=radio][name=preference]').change(function() {
-                if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
-                    $("#begin-button").prop('disabled', false);
-                } else {
-                    $("#begin-button").prop('disabled', true);
-                }
-            });
-
-            $("#radio-div").show();
         });
+
+        $('input[type=radio][name=preference]').change(function() {
+            if (this.value == 'men' | this.value == 'women' | this.value == 'both') {
+                $("#begin-button").prop('disabled', false);
+            } else {
+                $("#begin-button").prop('disabled', true);
+            }
+        });
+
+        url = "/participant/" + dallinger.identity.workerId + "/" + dallinger.identity.hitId +
+            "/" + dallinger.identity.assignmentId + "/" + dallinger.identity.mode + "?fingerprint_hash=" +
+            (dallinger.identity.fingerprintHash) + '&recruiter=' + dallinger.identity.recruiter;
+        
+        dallinger.post(url)
+            .done(function (resp) {
+                dallinger.identity.participantId = resp.participant.id;
+                $("#radio-div").show();
+            })
+            .fail(function (resp) {
+                dallinger.allowExit();
+                dallinger.goToPage('survey');
+            });
     </script>
 {% endblock %}

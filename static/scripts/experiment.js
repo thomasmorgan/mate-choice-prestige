@@ -34,7 +34,7 @@ function get_info() {
       }
     })
     .fail(function (rejection) { go_to_questionnaire(); });
-};
+}
 
 function received_new_info() {
   if (received_infos.length == 0) { return false; }
@@ -130,7 +130,7 @@ function display_faces() {
   $("#summary_row").hide();
   $("#face_row").show();
   $("#question_div").show();
-};
+}
 
 function create_summary() {
   question_json = JSON.parse(newest_info.contents);
