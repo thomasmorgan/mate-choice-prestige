@@ -14,6 +14,8 @@ title = Partner preference study (with bonus)
 keywords = Psychology, Questionnaire
 lifetime = 24
 us_only = true
+group_name = MatechoiceBIGRUN
+assign_qualifications = true
 
 [Email notifications]
 contact_email_on_error = mcforema@asu.edu
