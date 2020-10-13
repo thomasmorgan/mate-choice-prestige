@@ -6,6 +6,9 @@ var most_recent_info_id = 0;
 var total_questions = 30;
 var total_faces = 30;
 
+var timer_start_value = 27;
+var timer_value = 0;
+
 function go_to_questionnaire() {
   dallinger.allowExit();
   dallinger.goToPage('survey');
@@ -27,6 +30,7 @@ function get_info() {
           create_summary();
           display_summary();
         }
+        start_timer();
       } else {
         setTimeout(function() {
           get_info();
@@ -34,6 +38,24 @@ function get_info() {
       }
     })
     .fail(function (rejection) { go_to_questionnaire(); });
+}
+
+function start_timer() {
+  timer_value = timer_start_value;
+  $("#timer").html("");
+  timer_timeout = setTimeout(function() {
+    decrement_timer();
+  }, 1000);
+}
+
+function decrement_timer() {
+  if (timer_value > 0) {
+    timer_value -= 1;
+    if (timer_value <= 20) { $("#timer").html(timer_value); }
+    timer_timeout = setTimeout(function() {
+      decrement_timer();
+    }, 1000);
+  }
 }
 
 function received_new_info() {
@@ -184,6 +206,7 @@ function recover_stored_variables() {
 }
 
 function submit_response(response, type) {
+  clearTimeout(timer_timeout);
   $("#question_div").hide();
   $("#wait_div").show();
   dallinger.createInfo(my_node_id, {
