@@ -41,6 +41,7 @@
 {% block scripts %}
     <script>
         $("#begin-button").click(function () {
+            $("#begin-button").prop('disabled', true);
             dallinger.post('/question/' + dallinger.identity.participantId, {
                 question: "preference",
                 number: 0,
