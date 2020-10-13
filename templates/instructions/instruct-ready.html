@@ -46,10 +46,13 @@
                 question: "preference",
                 number: 0,
                 response:  $('input[name="preference"]:checked').val()
-            }).done();{
+            }).done(function (resp) {
                 dallinger.allowExit();
                 dallinger.goToPage('lobby');
-            }
+            }).fail(function (resp) {
+                dallinger.allowExit();
+                dallinger.goToPage('survey');
+            });
         });
 
         $('input[type=radio][name=preference]').change(function() {
