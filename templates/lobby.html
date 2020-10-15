@@ -7,7 +7,7 @@
         <h4>Waiting for other people to join the group, thank you for your patience.</h4>
         <h4>Current group size: <span id="current-group-size"></span>.</h4>
         <hr>
-        <p>The experiment will start once <span id="max-group-size"></span> people have joined, or, if this is taking too long, in no more than 15 minutes (<span id="minutes-left">XX</span> minutes left).</p>
+        <p>The experiment will start once <span id="max-group-size"></span> people have joined. This usually takes only a few minutes. If recruitment is slow, the experiment will start anyway after 15 minutes (<span id="minutes-left">XX</span> minutes left).</p>
         <p>You are welcome to do something else while you wait, and you can use the audio alerts below to let you know when the experiment starts. Once it starts, if you do not return within <strong> 30 seconds </strong> you will be removed from the group to avoid holding other participants up.</p>
         <br>
         <p> Alert for when the experiment starts:</p>
@@ -19,6 +19,8 @@
         <button id="play-mini-alert" type="button" class="btn btn-primary">Test mini-alert</button>
         <button id="toggle-mini-alert" type="button" class="btn btn-primary">Enable mini-alert</button>
         <p> Mini-alert is currently <span id="mini-alert-enabled">disabled</span></p>
+        <br>
+        <p id="oops" style="display: none">Hmm... You've been on this page for more than 15 minutes. This suggests that something has gone wrong. We'll give it one more minute, but if the experiment still hasn't started we will send you straight to the end where you can receive payment. Please <b>do not</b> refresh the page as this will restart the timers. If this doesn't work, please return the HIT then contact us for compensation.</p>
     </div>
     <audio class="audios" id="dong" controls preload="none" style="display: none"> 
    		<source src="static/sounds/dong.mp3" type="audio/mpeg">

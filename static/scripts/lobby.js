@@ -3,6 +3,8 @@ var my_node_id, my_network_id, num_neighbors = -1;
 $(document).ready(function() {
     get_node_id_or_create_agent();
     setTimeout(function() { initialize_alerts(); }, 3000);
+    setTimeout(function() { $("#oops").show(); }, 1000*60*15);
+    setTimeout(function() { go_to_questionnaire(); }, 1000*60*16);
 });
 
 function go_to_questionnaire() {
